@@ -39,11 +39,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnGravar = new System.Windows.Forms.Button();
-            this.listQuestoes = new System.Windows.Forms.ListBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSortear = new System.Windows.Forms.ToolStripButton();
+            this.listQuestoes = new System.Windows.Forms.ListBox();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnGravar = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -53,89 +53,86 @@
             // cmbMaterias
             // 
             this.cmbMaterias.FormattingEnabled = true;
-            this.cmbMaterias.Location = new System.Drawing.Point(120, 135);
-            this.cmbMaterias.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbMaterias.Location = new System.Drawing.Point(105, 101);
             this.cmbMaterias.Name = "cmbMaterias";
-            this.cmbMaterias.Size = new System.Drawing.Size(190, 28);
+            this.cmbMaterias.Size = new System.Drawing.Size(167, 23);
             this.cmbMaterias.TabIndex = 32;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(51, 139);
+            this.label4.Location = new System.Drawing.Point(45, 104);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 20);
+            this.label4.Size = new System.Drawing.Size(50, 15);
             this.label4.TabIndex = 31;
             this.label4.Text = "Matéria:";
             // 
             // cmbDisciplinas
             // 
             this.cmbDisciplinas.FormattingEnabled = true;
-            this.cmbDisciplinas.Location = new System.Drawing.Point(120, 99);
-            this.cmbDisciplinas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbDisciplinas.Location = new System.Drawing.Point(105, 74);
             this.cmbDisciplinas.Name = "cmbDisciplinas";
-            this.cmbDisciplinas.Size = new System.Drawing.Size(190, 28);
+            this.cmbDisciplinas.Size = new System.Drawing.Size(167, 23);
             this.cmbDisciplinas.TabIndex = 30;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(37, 100);
+            this.label3.Location = new System.Drawing.Point(32, 75);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 20);
+            this.label3.Size = new System.Drawing.Size(61, 15);
             this.label3.TabIndex = 29;
             this.label3.Text = "Disciplina:";
             // 
             // txtNumero
             // 
-            this.txtNumero.Location = new System.Drawing.Point(120, 30);
-            this.txtNumero.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtNumero.Location = new System.Drawing.Point(105, 22);
             this.txtNumero.Name = "txtNumero";
-            this.txtNumero.Size = new System.Drawing.Size(95, 27);
+            this.txtNumero.Size = new System.Drawing.Size(84, 23);
             this.txtNumero.TabIndex = 27;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(324, 139);
+            this.label2.Location = new System.Drawing.Point(284, 104);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(105, 20);
+            this.label2.Size = new System.Drawing.Size(85, 15);
             this.label2.TabIndex = 26;
             this.label2.Text = "Qtd. Questões:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(48, 29);
+            this.label1.Location = new System.Drawing.Point(42, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 20);
+            this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 25;
             this.label1.Text = "Número:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(120, 64);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox1.Location = new System.Drawing.Point(105, 48);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(442, 27);
+            this.textBox1.Size = new System.Drawing.Size(387, 23);
             this.textBox1.TabIndex = 34;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(64, 67);
+            this.label5.Location = new System.Drawing.Point(56, 50);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 20);
+            this.label5.Size = new System.Drawing.Size(40, 15);
             this.label5.TabIndex = 33;
             this.label5.Text = "Título:";
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(324, 103);
+            this.checkBox1.Location = new System.Drawing.Point(284, 77);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.checkBox1.Size = new System.Drawing.Size(186, 24);
+            this.checkBox1.Size = new System.Drawing.Size(148, 19);
             this.checkBox1.TabIndex = 38;
             this.checkBox1.Text = "?Prova de Recuperação";
             this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -145,44 +142,14 @@
             // 
             this.groupBox1.Controls.Add(this.toolStrip1);
             this.groupBox1.Controls.Add(this.listQuestoes);
-            this.groupBox1.Location = new System.Drawing.Point(17, 183);
+            this.groupBox1.Location = new System.Drawing.Point(15, 137);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(545, 410);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(477, 308);
             this.groupBox1.TabIndex = 39;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Questões Selecionadas:";
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancelar.Location = new System.Drawing.Point(476, 610);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(86, 60);
-            this.btnCancelar.TabIndex = 41;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            // 
-            // btnGravar
-            // 
-            this.btnGravar.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnGravar.Location = new System.Drawing.Point(383, 610);
-            this.btnGravar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnGravar.Name = "btnGravar";
-            this.btnGravar.Size = new System.Drawing.Size(86, 60);
-            this.btnGravar.TabIndex = 40;
-            this.btnGravar.Text = "Gravar";
-            this.btnGravar.UseVisualStyleBackColor = true;
-            // 
-            // listQuestoes
-            // 
-            this.listQuestoes.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.listQuestoes.FormattingEnabled = true;
-            this.listQuestoes.ItemHeight = 20;
-            this.listQuestoes.Location = new System.Drawing.Point(3, 83);
-            this.listQuestoes.Name = "listQuestoes";
-            this.listQuestoes.Size = new System.Drawing.Size(539, 324);
-            this.listQuestoes.TabIndex = 0;
             // 
             // toolStrip1
             // 
@@ -190,9 +157,9 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnSortear});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 23);
+            this.toolStrip1.Location = new System.Drawing.Point(3, 18);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(539, 66);
+            this.toolStrip1.Size = new System.Drawing.Size(471, 50);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -204,14 +171,46 @@
             this.btnSortear.Margin = new System.Windows.Forms.Padding(5);
             this.btnSortear.Name = "btnSortear";
             this.btnSortear.Padding = new System.Windows.Forms.Padding(5);
-            this.btnSortear.Size = new System.Drawing.Size(95, 56);
+            this.btnSortear.Size = new System.Drawing.Size(82, 40);
             this.btnSortear.Text = "Sortear";
+            // 
+            // listQuestoes
+            // 
+            this.listQuestoes.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listQuestoes.FormattingEnabled = true;
+            this.listQuestoes.ItemHeight = 15;
+            this.listQuestoes.Location = new System.Drawing.Point(3, 77);
+            this.listQuestoes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.listQuestoes.Name = "listQuestoes";
+            this.listQuestoes.Size = new System.Drawing.Size(471, 229);
+            this.listQuestoes.TabIndex = 0;
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancelar.Location = new System.Drawing.Point(416, 458);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 45);
+            this.btnCancelar.TabIndex = 41;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // btnGravar
+            // 
+            this.btnGravar.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnGravar.Location = new System.Drawing.Point(335, 458);
+            this.btnGravar.Name = "btnGravar";
+            this.btnGravar.Size = new System.Drawing.Size(75, 45);
+            this.btnGravar.TabIndex = 40;
+            this.btnGravar.Text = "Gravar";
+            this.btnGravar.UseVisualStyleBackColor = true;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(433, 136);
+            this.numericUpDown1.Location = new System.Drawing.Point(379, 102);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(129, 27);
+            this.numericUpDown1.Size = new System.Drawing.Size(113, 23);
             this.numericUpDown1.TabIndex = 42;
             this.numericUpDown1.Value = new decimal(new int[] {
             10,
@@ -221,9 +220,9 @@
             // 
             // TelaCriacaoTesteForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(592, 692);
+            this.ClientSize = new System.Drawing.Size(518, 519);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGravar);
@@ -238,6 +237,7 @@
             this.Controls.Add(this.txtNumero);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "TelaCriacaoTesteForm";
             this.Text = "TelaCriacaoTesteForm";
             this.groupBox1.ResumeLayout(false);
