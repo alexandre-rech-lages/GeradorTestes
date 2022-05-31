@@ -30,7 +30,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
             return colunas;
         }
 
-        public int ObtemNumeroTarefaSelecionado()
+        internal int ObtemNumeroMateriaSelecionado()
         {
             return grid.SelecionarNumero<int>();
         }

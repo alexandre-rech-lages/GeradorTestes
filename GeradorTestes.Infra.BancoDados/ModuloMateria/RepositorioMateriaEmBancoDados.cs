@@ -4,9 +4,6 @@ using GeradorTestes.Dominio.ModuloMateria;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeradorTestes.Infra.BancoDados.ModuloMateria
 {
@@ -14,7 +11,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
     {
         private const string enderecoBanco =
               "Data Source=(LocalDB)\\MSSqlLocalDB;" +
-              "Initial Catalog=eAgendaDb;" +
+              "Initial Catalog=GeradorTeste;" +
               "Integrated Security=True;" +
               "Pooling=False";
 
@@ -34,6 +31,20 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
 
                 SELECT SCOPE_IDENTITY()";
 
+        private const string sqlEditar =
+            @"UPDATE [MATERIA]	
+		        SET
+                    [NOME] = @NOME,
+			        [DISCIPLINA_NUMERO] = @DISCIPLINA_NUMERO,
+                    [SERIE] = @SERIE
+		        WHERE
+			        [NUMERO] = @NUMERO";
+
+        private const string sqlExcluir =
+            @"DELETE FROM [MATERIA]
+		        WHERE
+			        [NUMERO] = @NUMERO";
+
         private const string sqlSelecionarTodos =
             @"SELECT 
 	            MT.NUMERO,
@@ -46,6 +57,22 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
             FROM
 	            TBMATERIA AS MT INNER JOIN TBDISCIPLINA AS D ON
 	            MT.DISCIPLINA_NUMERO = D.NUMERO";
+
+        private const string sqlSelecionarPorNumero =
+            @"SELECT 
+	            MT.NUMERO,
+	            MT.NOME,
+	            MT.SERIE,
+
+	            D.NUMERO AS DISCIPLINA_NUMERO,
+	            D.NOME AS DISCIPLINA_NOME
+
+            FROM
+	            TBMATERIA AS MT INNER JOIN TBDISCIPLINA AS D ON
+	            MT.DISCIPLINA_NUMERO = D.NUMERO
+
+            WHERE
+                MT.NUMERO = @NUMERO";
 
         public ValidationResult Inserir(Materia materia)
         {
@@ -72,23 +99,69 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
             comandoInsercao.Parameters.AddWithValue("DISCIPLINA_NUMERO", materia.Disciplina.Numero);
         }
 
-        public ValidationResult Editar(Materia registro)
+        public ValidationResult Editar(Materia materia)
         {
-            throw new NotImplementedException();
+            var validador = new ValidadorMateria();
+
+            var resultadoValidacao = validador.Validate(materia);
+
+            if (resultadoValidacao.IsValid == false)
+                return resultadoValidacao;
+
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoEdicao = new SqlCommand(sqlEditar, conexaoComBanco);
+
+            ConfigurarParametrosMateria(materia, comandoEdicao);
+
+            conexaoComBanco.Open();
+            comandoEdicao.ExecuteNonQuery();
+            conexaoComBanco.Close();
+
+            return resultadoValidacao;
         }
 
-        public ValidationResult Excluir(Materia registro)
+        public ValidationResult Excluir(Materia materia)
         {
-            throw new NotImplementedException();
-        }
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
-        
+            SqlCommand comandoExclusao = new SqlCommand(sqlExcluir, conexaoComBanco);
+
+            comandoExclusao.Parameters.AddWithValue("NUMERO", materia.Numero);
+
+            conexaoComBanco.Open();
+            int numeroRegistrosExcluidos = comandoExclusao.ExecuteNonQuery();
+
+            var resultadoValidacao = new ValidationResult();
+
+            if (numeroRegistrosExcluidos == 0)
+                resultadoValidacao.Errors.Add(new ValidationFailure("", "Não foi possível remover o registro"));
+
+            conexaoComBanco.Close();
+
+            return resultadoValidacao;
+        }
 
         public Materia SelecionarPorNumero(int numero)
         {
-            throw new NotImplementedException();
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarPorNumero, conexaoComBanco);
+
+            comandoSelecao.Parameters.AddWithValue("NUMERO", numero);
+
+            conexaoComBanco.Open();
+            SqlDataReader leitorMateria = comandoSelecao.ExecuteReader();
+
+            Materia disciplina = null;
+            if (leitorMateria.Read())
+                disciplina = ConverterParaMateria(leitorMateria);
+
+            conexaoComBanco.Close();
+
+            return disciplina;
         }
-       
+
         public List<Materia> SelecionarTodos()
         {
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
@@ -125,7 +198,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
             {
                 Numero = numero,
                 Nome = nome,
-                Serie= (SerieMateriaEnum)serie,
+                Serie = (SerieMateriaEnum)serie,
                 Disciplina = new Disciplina
                 {
                     Numero = numeroDisciplina,

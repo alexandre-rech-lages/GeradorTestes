@@ -1,5 +1,4 @@
-﻿using GeradorTestes.Dominio.ModuloMateria;
-using GeradorTestes.Dominio.ModuloQuestao;
+﻿using GeradorTestes.Dominio.ModuloTeste;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -21,12 +20,15 @@ namespace GeradorTeste.WinApp.ModuloTeste
             {
                 new DataGridViewTextBoxColumn { DataPropertyName = "Numero", HeaderText = "Número", FillWeight=15F },
 
-                new DataGridViewTextBoxColumn { DataPropertyName = "Nome", HeaderText = "Nome", FillWeight=35F },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Titulo", HeaderText = "Título", FillWeight=15F },
+
+                new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina.Nome", HeaderText = "Disciplina", FillWeight=20F },
+
+                new DataGridViewTextBoxColumn { DataPropertyName = "Recuperacao", HeaderText = "Recuperação", FillWeight=25F },
 
                 new DataGridViewTextBoxColumn { DataPropertyName = "Materia.Nome", HeaderText = "Matéria", FillWeight=25F },
 
-                new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina.Nome", HeaderText = "Disciplina", FillWeight=25F }
-                
+
             };
 
             return colunas;
@@ -37,13 +39,16 @@ namespace GeradorTeste.WinApp.ModuloTeste
             return grid.SelecionarNumero<int>();
         }
 
-        public void AtualizarRegistros(List<Questao> questoes)
+        public void AtualizarRegistros(List<Teste> testes)
         {
             grid.Rows.Clear();
 
-            foreach (var questao in questoes)
+            foreach (var teste in testes)
             {
-                grid.Rows.Add(questao.Numero, questao.Enunciado, questao.Materia.Nome, questao.Disciplina.Nome);
+                string disciplina = teste.Recuperacao ? teste.Disciplina.Nome : teste.Materia.Disciplina.Nome;
+
+                grid.Rows.Add(teste.Numero, teste.Titulo, disciplina,
+                    teste.Recuperacao ? "Provão" : "", teste.Materia?.Nome);
             }
         }
     }

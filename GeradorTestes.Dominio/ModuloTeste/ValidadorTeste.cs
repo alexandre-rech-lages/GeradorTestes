@@ -6,28 +6,25 @@ namespace GeradorTestes.Dominio.ModuloTeste
     {
         public ValidadorTeste()
         {
+            RuleFor(x => x.Disciplina)
+                .NotNull().NotEmpty();
 
-        }
-        public void Valida()
-        {
-            //if (Disciplina == null)
-            //    throw new ApplicationException("Disciplina não pode estar em branco!");
+            RuleFor(x => x.DataGeracao)
+                .NotNull().NotEmpty();
 
-            //if (Recuperacao)
-            //{
-            //    if (Materia != null)
-            //        throw new ApplicationException("Materia deve estar em branco");
-            //}
-            //else
-            //{
-            //    if (Materia == null)
-            //        throw new ApplicationException("Materia deve estar selecionada");
-            //}
+            RuleFor(x => x.Titulo)
+                .NotNull().NotEmpty();
 
-            //if (QuantidadeQuestoes < 5)
-            //{
-            //    throw new ApplicationException("Quantidade de questões inválida");
-            //}
+            When(x => x.Recuperacao == true, () =>
+            {
+                RuleFor(x => x.Materia).Null();
+            }).Otherwise(() =>
+            {
+                RuleFor(x => x.Materia).NotNull();
+            });
+
+            RuleFor(x => x.QuantidadeQuestoes)
+                .GreaterThanOrEqualTo(5);
         }
     }
 }

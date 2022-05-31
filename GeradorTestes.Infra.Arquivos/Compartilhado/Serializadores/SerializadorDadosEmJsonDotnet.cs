@@ -18,6 +18,7 @@ namespace eAgenda.Infra.Arquivos
 
             settings.Formatting = Formatting.Indented;
             settings.PreserveReferencesHandling = PreserveReferencesHandling.All;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             return JsonConvert.DeserializeObject<DataContext>(arquivoJson, settings);
         }
@@ -28,6 +29,7 @@ namespace eAgenda.Infra.Arquivos
 
             settings.Formatting = Formatting.Indented;
             settings.PreserveReferencesHandling = PreserveReferencesHandling.All;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             string arquivoJson = JsonConvert.SerializeObject(dados, settings);
 

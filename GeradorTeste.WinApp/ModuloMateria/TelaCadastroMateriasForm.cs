@@ -39,7 +39,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
         {
             materia.Nome = txtNome.Text;
             materia.Serie = (SerieMateriaEnum)cmbSeries.SelectedItem;
-            materia.Disciplina = (Disciplina)cmbDisciplinas.SelectedItem;
+            materia.ConfigurarDisciplina((Disciplina)cmbDisciplinas.SelectedItem);
 
             var resultadoValidacao = GravarRegistro(materia);
 

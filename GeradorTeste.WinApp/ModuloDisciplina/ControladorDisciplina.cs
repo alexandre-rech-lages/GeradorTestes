@@ -1,6 +1,4 @@
-﻿using eAgenda.Infra.Arquivos.ModuloDisciplina;
-using GeradorTestes.Dominio.ModuloDisciplina;
-using System;
+﻿using GeradorTestes.Dominio.ModuloDisciplina;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -14,16 +12,6 @@ namespace GeradorTeste.WinApp.ModuloDisciplina
         public ControladorDisciplina(IRepositorioDisciplina repositorioDisciplina)
         {
             this.repositorioDisciplina = repositorioDisciplina;
-        }
-
-        public override void Editar()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public override void Excluir()
-        {
-            throw new NotImplementedException();
         }
 
         public override void Inserir()
@@ -41,6 +29,58 @@ namespace GeradorTeste.WinApp.ModuloDisciplina
                 CarregarDisciplinas();
             }
         }
+
+        public override void Editar()
+        {
+            var numero = tabelaDisciplinas.ObtemNumeroDisciplinaSelecionado();
+
+            Disciplina disciplinaSelecionada = repositorioDisciplina.SelecionarPorNumero(numero);
+
+            if (disciplinaSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma disciplina primeiro",
+                "Edição de Compromissos", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var tela = new TelaCadastroDisciplinasForm();
+
+            tela.Disciplina = disciplinaSelecionada.Clone();
+
+            tela.GravarRegistro = repositorioDisciplina.Inserir;
+
+            DialogResult resultado = tela.ShowDialog();
+
+            if (resultado == DialogResult.OK)
+            {
+                CarregarDisciplinas();
+            }
+
+        }
+
+        public override void Excluir()
+        {
+            var numero = tabelaDisciplinas.ObtemNumeroDisciplinaSelecionado();
+
+            Disciplina disciplinaSelecionada = repositorioDisciplina.SelecionarPorNumero(numero);
+
+            if (disciplinaSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma disciplina primeiro",
+                "Exclusão de Disciplinas", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            DialogResult resultado = MessageBox.Show("Deseja realmente excluir a disciplina?",
+               "Exclusão de Disciplinas", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.OK)
+            {
+                repositorioDisciplina.Excluir(disciplinaSelecionada);
+                CarregarDisciplinas();
+            }
+        }
+
 
         public override ConfiguracaoToolboxBase ObtemConfiguracaoToolbox()
         {

@@ -1,24 +1,9 @@
-﻿using GeradorTestes.Dominio.ModuloDisciplina;
-using GeradorTestes.Dominio.ModuloMateria;
-using System;
+﻿using GeradorTestes.Dominio.ModuloMateria;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GeradorTestes.Dominio.ModuloQuestao
 {
-    public static class CharExtension
-    {
-        public static char Next(this char instancia)
-        {
-            int numero = instancia;
-
-            numero++;
-
-            return (char)numero;
-        }
-    }
-
-
     public class Questao : EntidadeBase<Questao>
     {
         private readonly List<Alternativa> _alternativas;
@@ -29,11 +14,13 @@ namespace GeradorTestes.Dominio.ModuloQuestao
             Materia = new Materia();
         }
 
-        public Questao(int n, int qtdAlternativas, Materia m)
+        public Questao(string enunciado, Materia materia, List<Alternativa> alternativas)
         {
-            Numero = n;
-            _alternativas = new List<Alternativa>(qtdAlternativas);
+            _alternativas = alternativas;
+            Enunciado = enunciado;
+            Materia = materia;
         }
+
 
         public List<Alternativa> Alternativas
         {
@@ -42,128 +29,90 @@ namespace GeradorTestes.Dominio.ModuloQuestao
 
         public string Enunciado { get; set; }
 
-        public Disciplina Disciplina { get; set; }
-
         public Materia Materia { get; set; }
 
-        public int Numero { get; set; }
-
-
-        //public void AdicionaUltimaAlternativa()
-        //{
-        //    char letra = _alternativas.Last().Letra.Next();
-
-        //    AdicionaAlternativa(new Alternativa { Letra = letra });
-        //}
-
-        public void AdicionarAlternativa(Alternativa alternativa)
+        public bool AdicionarAlternativa(Alternativa alternativa)
         {
-            //int qtdAlternativasCorretas = ObtemQuantidadeAlternativaCorreta();
-
-            //if (qtdAlternativasCorretas == 1 && alternativa.Correta)
-            //{
-            //    throw new ApplicationException("Não pode cadastrar duas alternativas corretas para a questão: " + Numero);
-            //}
-
-            //if (qtdAlternativasCorretas == 0 && EhUltimaPosicao() && alternativa.Correta == false)
-            //{
-            //    throw new ApplicationException(
-            //        "Ao menos uma alternativa correta deverá ser informado para a questão: " + Numero);
-            //}
+            if (_alternativas.Contains(alternativa))
+                return false;
 
             alternativa.Questao = this;
 
-            alternativa.Letra = ObterProximaLetra();
-
             _alternativas.Add(alternativa);
+
+            return true;
         }
-
-        public char ObterProximaLetra()
-        {
-            char letra = 'a';
-
-            if (Alternativas.Count == 0)
-                return letra;
-
-            char ultimaLetra = Alternativas.Select(x => x.Letra).Last();
-
-            int numeroUltimaLetra = ++ultimaLetra;
-
-            return (char)numeroUltimaLetra;
-        }
-
 
 
         public Alternativa ObtemAlternativaCorreta()
         {
-            return Alternativas.First(x => x.Correta);
+            if (Alternativas.Any())
+                return Alternativas.FirstOrDefault(x => x.Correta);
+
+            return null;
         }
-
-
-        //public bool ExisteAlternativaCorreta()
-        //{
-        //    return Alternativas
-        //        .ToList()
-        //        .Exists(x => x.Correta);
-        //}
-
-        //public void RemoveAlternativa(Alternativa alternativaSelecionada)
-        //{
-        //    Alternativas.Remove(alternativaSelecionada);
-        //}
-
-        //public override string ToString()
-        //{
-        //    return string.Format("Número: {0}, {1}", Numero, Enunciado);
-        //}
-
-
-
-        //private bool EhUltimaPosicao()
-        //{
-        //    return ObtemQuantidadeAlternativaCadastrada() == Alternativas.Count - 1;
-        //}
-
-        //private int ObtemQuantidadeAlternativaCadastrada()
-        //{
-        //    return Alternativas.Count();
-        //}
-
-        //private int ObtemQuantidadeAlternativaCorreta()
-        //{
-        //    return Alternativas
-        //        .Count(x => x.Correta);
-        //}
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (obj is Questao == false)
-        //        return false;
-
-        //    var questao = (Questao)obj;
-        //    if (questao.Numero == Numero)
-        //        return true;
-
-        //    return false;
-        //}
-
-        //public void ReorganizarLetrasAlternativas()
-        //{
-        //    int letra = 'A';
-
-        //    var alternativasNaoRemovidas = Alternativas.ToList();
-
-        //    foreach (Alternativa alternativa in alternativasNaoRemovidas)
-        //    {
-        //        alternativa.Letra = (char)letra++;
-        //    }
-        //}
 
         public override void Atualizar(Questao questao)
         {
+            Enunciado = questao.Enunciado;
+            Materia = questao.Materia;
         }
 
+        public Questao Clone()
+        {
+            return MemberwiseClone() as Questao;
+        }
 
+        private void RedefinirLetras()
+        {
+            char letra = 'A';
 
+            foreach (var item in Alternativas)
+            {
+                item.Letra = letra;
+                letra = letra.Next();
+            }
+        }
+
+        public char GerarLetraAlternativa()
+        {
+            return Alternativas.Count == 0 ? 'A' :
+                Alternativas.Select(x => x.Letra).Last().Next();
+        }
+
+        public void AtualizarAlternativaCorreta(Alternativa alternativaCorreta)
+        {
+            foreach (var a in Alternativas)
+            {
+                if (a.Equals(alternativaCorreta))
+                {
+                    a.Correta = true;
+                }
+                else
+                {
+                    a.Correta = false;
+                }
+            }
+        }
+
+        public void RemoverAlternativa(Alternativa alternativa)
+        {
+            Alternativas.Remove(alternativa);
+            RedefinirLetras();
+        }
+
+        public void ConfigurarMateria(Materia materia)
+        {
+            if (Materia.Equals(materia) == false)
+            {
+                Materia = materia;
+                Materia.AdicionaQuestao(this);
+            }
+        }
+
+        public override string ToString()
+        {
+            return Enunciado;
+        }
     }
 }

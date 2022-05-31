@@ -1,5 +1,4 @@
-﻿using GeradorTestes.Dominio.ModuloMateria;
-using GeradorTestes.Dominio.ModuloQuestao;
+﻿using GeradorTestes.Dominio.ModuloQuestao;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -26,15 +25,10 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 new DataGridViewTextBoxColumn { DataPropertyName = "Materia.Nome", HeaderText = "Matéria", FillWeight=25F },
 
                 new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina.Nome", HeaderText = "Disciplina", FillWeight=25F }
-                
+
             };
 
             return colunas;
-        }
-
-        public int ObtemNumeroTarefaSelecionado()
-        {
-            return grid.SelecionarNumero<int>();
         }
 
         public void AtualizarRegistros(List<Questao> questoes)
@@ -43,8 +37,13 @@ namespace GeradorTeste.WinApp.ModuloQuestao
 
             foreach (var questao in questoes)
             {
-                grid.Rows.Add(questao.Numero, questao.Enunciado, questao.Materia.Nome, questao.Disciplina.Nome);
+                grid.Rows.Add(questao.Numero, questao.Enunciado, questao?.Materia?.Nome, questao.Materia?.Disciplina?.Nome);
             }
+        }
+
+        internal int ObtemNumeroQuestaoSelecionado()
+        {
+            return grid.SelecionarNumero<int>();
         }
     }
 }

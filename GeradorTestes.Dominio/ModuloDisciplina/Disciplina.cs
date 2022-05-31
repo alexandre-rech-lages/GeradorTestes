@@ -6,16 +6,6 @@ using System.Linq;
 
 namespace GeradorTestes.Dominio.ModuloDisciplina
 {
-    public static class IEnumerableExtensions
-    {
-        public static IEnumerable<T> Randomize<T>(this IEnumerable<T> target, int count)
-        {
-            Random r = new Random();
-
-            return target.OrderBy(x => (r.Next())).Take(count);
-        }
-    }
-
     public class Disciplina : EntidadeBase<Disciplina>
     {
         public Disciplina()
@@ -41,26 +31,51 @@ namespace GeradorTestes.Dominio.ModuloDisciplina
 
         public string Nome { get; set; }
 
-        public override bool Equals(object obj)
+        public List<Materia> ObterMateriasPorSerie(SerieMateriaEnum serie)
         {
-            if (obj is Disciplina == false)
+            if (Materias.Any())
+                return Materias.Where(x => x.Serie == serie).ToList();
+
+            return new List<Materia>();
+        }
+
+        public bool AdicionarMateria(Materia materia)
+        {
+            if (Materias.Contains(materia))
                 return false;
 
-            var disciplina = (Disciplina)obj;
-            if (disciplina.Numero == this.Numero)
-                return true;
+            Materias.Add(materia);
 
-            return false;
+            materia.ConfigurarDisciplina(this);
+
+            return true;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} - Quantidade de questões: {1}", Nome, TodasQuestoes.Count());
+            return Nome;
         }
-
 
         public override void Atualizar(Disciplina disciplina)
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Disciplina disciplina &&
+                   Numero == disciplina.Numero &&
+                   EqualityComparer<List<Materia>>.Default.Equals(Materias, disciplina.Materias) &&
+                   Nome == disciplina.Nome;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Numero, Materias, Nome);
+        }
+
+        public Disciplina Clone()
+        {
+            return MemberwiseClone() as Disciplina;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GeradorTestes.Dominio.ModuloQuestao
+﻿using System;
+
+namespace GeradorTestes.Dominio.ModuloQuestao
 {
     public class Alternativa
     {
@@ -14,15 +16,23 @@
         public Questao Questao { get; set; }
 
         public string Resposta { get; set; }
+
+        public int Numero { get; set; }
+
         public override bool Equals(object obj)
         {
-            if (obj is Alternativa == false)
-                return false;
-
-            var alternativa = (Alternativa)obj;
-
-            return (Letra == alternativa.Letra && Resposta == alternativa.Resposta && Correta == alternativa.Correta);
+            return obj is Alternativa alternativa &&
+                   Correta == alternativa.Correta &&
+                   Letra == alternativa.Letra &&
+                   Resposta == alternativa.Resposta &&
+                   Numero == alternativa.Numero;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Correta, Letra, Questao, Resposta, Numero);
+        }
+
         public override string ToString()
         {
             if (Correta)

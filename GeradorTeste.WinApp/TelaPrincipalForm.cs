@@ -97,7 +97,7 @@ namespace GeradorTeste.WinApp
         {
             controlador.Excluir();
         }
-             
+
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
             controlador.Filtrar();
@@ -171,6 +171,7 @@ namespace GeradorTeste.WinApp
         {
             IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contextoDados);
             IRepositorioMateria repositorioMateria = new RepositorioMateriaEmArquivo(contextoDados);
+
             IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoEmArquivo(contextoDados);
             IRepositorioTeste repositorioTeste = new RepositorioTesteEmArquivo(contextoDados);
 
@@ -178,10 +179,10 @@ namespace GeradorTeste.WinApp
 
             controladores.Add("Disciplinas", new ControladorDisciplina(repositorioDisciplina));
             controladores.Add("Matérias", new ControladorMateria(repositorioMateria, repositorioDisciplina));
-            controladores.Add("Questões", new ControladorQuestao(repositorioQuestao, repositorioDisciplina, repositorioMateria));
+            controladores.Add("Questões", new ControladorQuestao(repositorioQuestao, repositorioDisciplina));
             controladores.Add("Testes", new ControladorTeste(repositorioTeste, repositorioQuestao, repositorioDisciplina, repositorioMateria));
         }
 
-        
+
     }
 }

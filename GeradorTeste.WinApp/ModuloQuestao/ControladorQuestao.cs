@@ -1,8 +1,4 @@
-﻿using eAgenda.Infra.Arquivos.ModuloDisciplina;
-using eAgenda.Infra.Arquivos.ModuloMateria;
-using eAgenda.Infra.Arquivos.ModuloQuestao;
-using GeradorTestes.Dominio.ModuloDisciplina;
-using GeradorTestes.Dominio.ModuloMateria;
+﻿using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloQuestao;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -12,31 +8,20 @@ namespace GeradorTeste.WinApp.ModuloQuestao
     public class ControladorQuestao : ControladorBase
     {
         private IRepositorioDisciplina repositorioDisciplina;
-        private IRepositorioMateria repositorioMateria;
         private IRepositorioQuestao repositorioQuestao;
         private TabelaQuestoesControl tabelaQuestoes;
 
-        public ControladorQuestao(IRepositorioQuestao repositorioQuestao, IRepositorioDisciplina repositorioDisciplina, IRepositorioMateria repositorioMateria)
+        public ControladorQuestao(IRepositorioQuestao repositorioQuestao, IRepositorioDisciplina repositorioDisciplina)
         {
             this.repositorioQuestao = repositorioQuestao;
             this.repositorioDisciplina = repositorioDisciplina;
-            this.repositorioMateria = repositorioMateria;
-        }
-
-        public override void Editar()
-        {
-        }
-
-        public override void Excluir()
-        {
         }
 
         public override void Inserir()
         {
             List<Disciplina> disciplinas = repositorioDisciplina.SelecionarTodos();
-            List<Materia> materias = repositorioMateria.SelecionarTodos();
 
-            var tela = new TelaCadastroQuestoesForm(disciplinas, materias);
+            var tela = new TelaCadastroQuestoesForm(disciplinas);
 
             tela.Questao = new Questao();
 
@@ -46,7 +31,59 @@ namespace GeradorTeste.WinApp.ModuloQuestao
 
             if (resultado == DialogResult.OK)
             {
-                CarregarQuestaos();
+                CarregarQuestoes();
+            }
+        }
+
+        public override void Editar()
+        {
+            var numero = tabelaQuestoes.ObtemNumeroQuestaoSelecionado();
+
+            Questao questaoSelecionada = repositorioQuestao.SelecionarPorNumero(numero);
+
+            if (questaoSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma questão primeiro",
+                "Edição de Questões", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            List<Disciplina> disciplinas = repositorioDisciplina.SelecionarTodos();
+
+            var tela = new TelaCadastroQuestoesForm(disciplinas);
+
+            tela.Questao = questaoSelecionada.Clone();
+
+            tela.GravarRegistro = repositorioQuestao.Editar;
+
+            DialogResult resultado = tela.ShowDialog();
+
+            if (resultado == DialogResult.OK)
+            {
+                CarregarQuestoes();
+            }
+        }
+
+        public override void Excluir()
+        {
+            var numero = tabelaQuestoes.ObtemNumeroQuestaoSelecionado();
+
+            Questao questaoSelecionada = repositorioQuestao.SelecionarPorNumero(numero);
+
+            if (questaoSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma questão primeiro",
+                "Edição de Questões", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            DialogResult resultado = MessageBox.Show("Deseja realmente excluir a questão?",
+               "Exclusão de Questões", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.OK)
+            {
+                repositorioQuestao.Excluir(questaoSelecionada);
+                CarregarQuestoes();
             }
         }
 
@@ -60,12 +97,12 @@ namespace GeradorTeste.WinApp.ModuloQuestao
             if (tabelaQuestoes == null)
                 tabelaQuestoes = new TabelaQuestoesControl();
 
-            CarregarQuestaos();
+            CarregarQuestoes();
 
             return tabelaQuestoes;
         }
 
-        private void CarregarQuestaos()
+        private void CarregarQuestoes()
         {
             List<Questao> questoes = repositorioQuestao.SelecionarTodos();
 

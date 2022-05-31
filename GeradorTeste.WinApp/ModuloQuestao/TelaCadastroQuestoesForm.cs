@@ -12,12 +12,11 @@ namespace GeradorTeste.WinApp.ModuloQuestao
     {
         private Questao questao;
 
-        public TelaCadastroQuestoesForm(List<Disciplina> disciplinas, List<Materia> materias)
+        public TelaCadastroQuestoesForm(List<Disciplina> disciplinas)
         {
             InitializeComponent();
             this.ConfigurarTela();
             CarregarDisciplinas(disciplinas);
-            CarregarMaterias(materias);
         }
 
         public Func<Questao, ValidationResult> GravarRegistro { get; set; }
@@ -30,8 +29,14 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 questao = value;
                 txtNumero.Text = Questao.Numero.ToString();
                 txtEnunciado.Text = Questao.Enunciado;
+                cmbDisciplinas.SelectedItem = Questao.Materia?.Disciplina;
+
                 cmbMaterias.SelectedItem = Questao.Materia;
-                cmbDisciplinas.SelectedItem = Questao.Disciplina;
+
+                foreach (var item in questao.Alternativas)
+                {
+                    listAlternativas.Items.Add(item);
+                }
             }
         }
 
@@ -59,7 +64,6 @@ namespace GeradorTeste.WinApp.ModuloQuestao
         {
             Questao.Enunciado = txtEnunciado.Text;
             Questao.Materia = (Materia)cmbMaterias.SelectedItem;
-            Questao.Disciplina = (Disciplina)cmbDisciplinas.SelectedItem;
 
             var resultadoValidacao = GravarRegistro(questao);
 
@@ -77,14 +81,70 @@ namespace GeradorTeste.WinApp.ModuloQuestao
         {
             Alternativa alternativa = new Alternativa();
 
-            if (chkAlternativaCorreta.Checked)
-                alternativa.Correta = true;
-
+            alternativa.Letra = questao.GerarLetraAlternativa();
             alternativa.Resposta = txtResposta.Text;
 
-            questao.AdicionarAlternativa(alternativa);
+            Questao.AdicionarAlternativa(alternativa);
 
-            listAlternativas.Items.Add(alternativa);
+            RecarregarAlternativas();
+        }
+
+        private void btnRemover_Click(object sender, EventArgs e)
+        {
+            var alternativa = listAlternativas.SelectedItem as Alternativa;
+
+            if (alternativa != null)
+            {
+                Questao.RemoverAlternativa(alternativa);
+
+                listAlternativas.Items.Remove(alternativa);
+
+                RecarregarAlternativas();
+            }
+        }
+
+        private void RecarregarAlternativas()
+        {
+            listAlternativas.Items.Clear();
+
+            foreach (var item in questao.Alternativas)
+            {
+                listAlternativas.Items.Add(item);
+            }
+        }
+
+        private void cmbDisciplinas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var disciplina = cmbDisciplinas.SelectedItem as Disciplina;
+
+            if (disciplina != null)
+                CarregarMaterias(disciplina.Materias);
+        }
+
+        private void chkAlternativaCorreta_CheckedChanged(object sender, EventArgs e)
+        {
+            var alternativa = listAlternativas.SelectedItem as Alternativa;
+
+            if (alternativa == null)
+                return;
+
+            if (chkAlternativaCorreta.Checked)
+            {
+                Questao.AtualizarAlternativaCorreta(alternativa);
+                RecarregarAlternativas();
+            }
+
+            else
+                alternativa.Correta = false;
+        }
+
+        private void listAlternativas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var alternativa = listAlternativas.SelectedItem as Alternativa;
+            if (alternativa != null && alternativa.Correta)
+                chkAlternativaCorreta.Checked = true;
+            else
+                chkAlternativaCorreta.Checked = false;
         }
     }
 }

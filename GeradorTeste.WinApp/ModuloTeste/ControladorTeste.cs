@@ -1,7 +1,4 @@
-﻿using eAgenda.Infra.Arquivos.ModuloDisciplina;
-using eAgenda.Infra.Arquivos.ModuloMateria;
-using eAgenda.Infra.Arquivos.ModuloQuestao;
-using GeradorTestes.Dominio.ModuloDisciplina;
+﻿using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using GeradorTestes.Dominio.ModuloQuestao;
 using GeradorTestes.Dominio.ModuloTeste;
@@ -34,15 +31,17 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
         public override void Excluir()
         {
+
         }
 
         public override void Inserir()
         {
-            List<Disciplina> disciplinas = repositorioDisciplina.SelecionarTodos();
-            List<Materia> materias = repositorioMateria.SelecionarTodos();
+            var disciplinas = repositorioDisciplina.SelecionarTodos();
 
-            var tela = new TelaCriacaoTesteForm();
-            
+            var tela = new TelaCriacaoTesteForm(disciplinas);
+
+            tela.Teste = new Teste();
+
             tela.GravarRegistro = repositorioTeste.Inserir;
 
             DialogResult resultado = tela.ShowDialog();
@@ -70,11 +69,11 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
         private void CarregarQuestaos()
         {
-            List<Questao> questoes = repositorioQuestao.SelecionarTodos();
+            List<Teste> testes = repositorioTeste.SelecionarTodos();
 
-            tabelaTestes.AtualizarRegistros(questoes);
+            tabelaTestes.AtualizarRegistros(testes);
 
-            TelaPrincipalForm.Instancia.AtualizarRodape($"Visualizando {questoes.Count} questão(ões)");
+            TelaPrincipalForm.Instancia.AtualizarRodape($"Visualizando {testes.Count} teste(s)");
         }
     }
 }

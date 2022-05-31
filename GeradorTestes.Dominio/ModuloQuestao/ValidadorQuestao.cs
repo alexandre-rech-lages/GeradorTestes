@@ -6,6 +6,18 @@ namespace GeradorTestes.Dominio.ModuloQuestao
     {
         public ValidadorQuestao()
         {
+            //int qtdAlternativasCorretas = ObtemQuantidadeAlternativaCorreta();
+
+            //if (qtdAlternativasCorretas == 1 && alternativa.Correta)
+            //{
+            //    throw new ApplicationException("Não pode cadastrar duas alternativas corretas para a questão: " + Numero);
+            //}
+
+            //if (qtdAlternativasCorretas == 0 && EhUltimaPosicao() && alternativa.Correta == false)
+            //{
+            //    throw new ApplicationException(
+            //        "Ao menos uma alternativa correta deverá ser informado para a questão: " + Numero);
+            //}
 
         }
 

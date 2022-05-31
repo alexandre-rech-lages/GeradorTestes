@@ -143,7 +143,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "TelaCadastroMateriasForm";
-            this.Text = "TelaCadastroMateriasForm";
+            this.Text = "Cadastro de Matérias";
             this.ResumeLayout(false);
             this.PerformLayout();
 

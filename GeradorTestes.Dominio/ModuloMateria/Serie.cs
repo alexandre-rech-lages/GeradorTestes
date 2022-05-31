@@ -2,6 +2,6 @@
 {
     public enum SerieMateriaEnum
     {
-       Primeira, Segunda
+        Primeira, Segunda
     }
 }

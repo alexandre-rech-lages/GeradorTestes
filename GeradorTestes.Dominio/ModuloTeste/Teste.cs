@@ -10,14 +10,14 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
     public class Teste : EntidadeBase<Teste>
     {
-        public Teste(bool recuperacao)
+        public Teste()
         {
-            Recuperacao = recuperacao;
-
-            Gabarito = new Gabarito();
+            DataGeracao = DateTime.Now;
         }
 
-        public List<Questao> Questoes { get; private set; }
+        public string Titulo { get; set; }
+
+        public List<Questao> Questoes { get; set; }
 
         public bool Recuperacao { get; set; }
 
@@ -27,40 +27,35 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public Materia Materia { get; set; }
 
-        public Gabarito Gabarito { get; private set; }
-
         public int QuantidadeQuestoes { get; set; }
 
-        public void AdicionaQuestao(Questao questao)
+
+        public Gabarito ObterGabarito()
         {
-            Questoes.Add(questao);
+            Gabarito gabarito = new Gabarito();
+
+            gabarito.QuestoesCorretas = new List<AlternativaCorreta>(QuantidadeQuestoes);
+
+            foreach (var questao in Questoes)
+            {
+                Alternativa alternativa = questao.ObtemAlternativaCorreta();
+
+                gabarito.AdicionaQuestaoCorreta(questao.Numero, alternativa.Letra);
+            }
+
+            return gabarito;
         }
 
-        public void GerarTeste()
+        public void SortearQuestoes()
         {
             if (Recuperacao)
                 Questoes = Disciplina.TodasQuestoes.Randomize(QuantidadeQuestoes).ToList();
             else
                 Questoes = Materia.Questoes.Randomize(QuantidadeQuestoes).ToList();
-
-            Gabarito.QuestoesCorretas = new List<AlternativaCorreta>(QuantidadeQuestoes);
-
-            foreach (var questao in Questoes)
-            {
-                //Alternativa alternativa = questao.ObtemAlternativaCorreta();
-
-                //Gabarito.AdicionaQuestaoCorreta(questao.Numero, alternativa.Letra);
-            }
         }
-
 
         public override void Atualizar(Teste teste)
         {
         }
-
-
-
-
-
     }
 }

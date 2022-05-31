@@ -26,7 +26,7 @@ namespace GeradorTeste.WinApp.ModuloDisciplina
             return colunas;
         }
 
-        public int ObtemNumeroTarefaSelecionado()
+        public int ObtemNumeroDisciplinaSelecionado()
         {
             return grid.SelecionarNumero<int>();
         }

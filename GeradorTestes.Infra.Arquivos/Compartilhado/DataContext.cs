@@ -25,7 +25,7 @@ namespace eAgenda.Infra.Arquivos
         }
 
         public int ObterUltimoNumeroDisciplina()
-        {   
+        {
             if (Disciplinas.Any())
                 return Disciplinas.Max(x => x.Numero);
 

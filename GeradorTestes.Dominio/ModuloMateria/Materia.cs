@@ -7,58 +7,74 @@ namespace GeradorTestes.Dominio.ModuloMateria
 {
     public class Materia : EntidadeBase<Materia>
     {
-
-        public Disciplina Disciplina { get; set; }
-
-        public List<Questao> Questoes { get; private set; }
-
-        public string Nome { get; set; }
-
-        public SerieMateriaEnum Serie { get; set; }
-
         public Materia()
         {
             Disciplina = new Disciplina();
             Questoes = new List<Questao>();
         }
 
-        public Materia(string n)
-        {
-            Nome = n;
-        }
-
-        public Materia(string n, Disciplina d, SerieMateriaEnum s)
+        public Materia(string n, Disciplina d, SerieMateriaEnum s) : this()
         {
             Nome = n;
             Disciplina = d;
             Serie = s;
         }
 
+        public string Nome { get; set; }
+
+        public SerieMateriaEnum Serie { get; set; }
+
+        public Disciplina Disciplina { get; set; }
+
+        public List<Questao> Questoes { get; set; }
+
         public void AdicionaQuestao(Questao questao)
         {
+            if (Questoes.Contains(questao))
+                return;
+
             Questoes.Add(questao);
+
+            questao.Materia = this;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} - Série: {1}", Nome, Serie);
-        }       
+            return string.Format("{0}, {1}", Nome, Serie);
+        }
 
-        public override bool Equals(object obj)
+        public void ConfigurarDisciplina(Disciplina disciplina)
         {
-            if (obj is Materia == false)
-                return false;
+            if (Disciplina.Equals(disciplina) == false)
+            {
+                Disciplina = disciplina;
+                Disciplina.AdicionarMateria(this);
+            }
+        }
 
-            Materia materia = (Materia)obj;
-            if (materia.Numero == this.Numero)
-                return true;
-
-            return false;
+        public Materia Clone()
+        {
+            return MemberwiseClone() as Materia;
         }
 
         public override void Atualizar(Materia materia)
         {
+            Nome = materia.Nome;
+            Disciplina = materia.Disciplina;
+            Serie = materia.Serie;
+        }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Materia materia &&
+                   Numero == materia.Numero &&
+                   Nome == materia.Nome &&
+                   Serie == materia.Serie;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Numero, Nome, Serie, Disciplina, Questoes);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using eAgenda.Infra.Arquivos.ModuloDisciplina;
-using eAgenda.Infra.Arquivos.ModuloMateria;
-using GeradorTestes.Dominio.ModuloDisciplina;
+﻿using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -14,19 +12,11 @@ namespace GeradorTeste.WinApp.ModuloMateria
 
         private TabelaMateriasControl tabelaMaterias;
 
-        public ControladorMateria(IRepositorioMateria repositorioMateria, 
+        public ControladorMateria(IRepositorioMateria repositorioMateria,
             IRepositorioDisciplina repositorioDisciplina)
         {
             this.repositorioMateria = repositorioMateria;
             this.repositorioDisciplina = repositorioDisciplina;
-        }
-
-        public override void Editar()
-        {
-        }
-
-        public override void Excluir()
-        {
         }
 
         public override void Inserir()
@@ -46,6 +36,61 @@ namespace GeradorTeste.WinApp.ModuloMateria
                 CarregarMaterias();
             }
         }
+
+        public override void Editar()
+        {
+            var numero = tabelaMaterias.ObtemNumeroMateriaSelecionado();
+
+            Materia materiaSelecionada = repositorioMateria.SelecionarPorNumero(numero);
+
+            if (materiaSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma materia primeiro",
+                "Edição de Compromissos", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            List<Disciplina> materias = repositorioDisciplina.SelecionarTodos();
+
+            var tela = new TelaCadastroMateriasForm(materias);
+
+            tela.Materia = materiaSelecionada.Clone();
+
+            tela.GravarRegistro = repositorioMateria.Inserir;
+
+            DialogResult resultado = tela.ShowDialog();
+
+            if (resultado == DialogResult.OK)
+            {
+                CarregarMaterias();
+            }
+
+        }
+
+        public override void Excluir()
+        {
+            var numero = tabelaMaterias.ObtemNumeroMateriaSelecionado();
+
+            Materia materiaSelecionada = repositorioMateria.SelecionarPorNumero(numero);
+
+            if (materiaSelecionada == null)
+            {
+                MessageBox.Show("Selecione uma materia primeiro",
+                "Exclusão de Materias", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            DialogResult resultado = MessageBox.Show("Deseja realmente excluir a materia?",
+               "Exclusão de Materias", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.OK)
+            {
+                repositorioMateria.Excluir(materiaSelecionada);
+                CarregarMaterias();
+            }
+        }
+
+
 
         public override ConfiguracaoToolboxBase ObtemConfiguracaoToolbox()
         {
