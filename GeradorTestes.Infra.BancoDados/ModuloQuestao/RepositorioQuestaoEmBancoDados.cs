@@ -46,42 +46,46 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 			            [NUMERO] = @NUMERO";
 
         private const string sqlSelecionarTodos =
-            @"SELECT 
-	                Q.NUMERO,
-	                Q.ENUNCIADO,
+            @"SELECT        
+	                T.TITULO, 
+	                T.DATAGERACAO, 
+	                T.PROVAO, 	
+	                T.NUMERO, 
 
-	                M.NUMERO AS MATERIA_NUMERO,
-	                M.NOME AS MATERIA_NOME,
-	                M.SERIE AS MATERIA_SERIE,
+	                D.NUMERO DISCIPLINA_NUMERO, 
+	                D.NOME DISCIPLINA_NOME,
+	
+	                M.NUMERO MATERIA_NUMERO, 
+	                M.NOME MATERIA_NOME,
+	                M.SERIE MATERIA_SERIE 	
 
-	                D.NUMERO AS DISCIPLINA_NUMERO,
-	                D.NOME AS DISCIPLINA_NOME
-
-                FROM 
-	                TBQUESTAO Q INNER JOIN TBMATERIA M 
+                FROM  
+	                TBTESTE T INNER JOIN TBDISCIPLINA D 
                 ON 
-	                Q.MATERIA_NUMERO = M.NUMERO INNER JOIN TBDISCIPLINA D 
+	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
                 ON 
-	                D.NUMERO = M.DISCIPLINA_NUMERO";
+	                T.MATERIA_NUMERO = M.NUMERO";
 
         private const string sqlSelecionarPorNumero =
-            @"SELECT 
-	                Q.NUMERO,
-	                Q.ENUNCIADO,
+            @"SELECT        
+	                T.TITULO, 
+	                T.DATAGERACAO, 
+	                T.PROVAO, 	
+	                T.NUMERO, 
 
-	                M.NUMERO AS MATERIA_NUMERO,
-	                M.NOME AS MATERIA_NOME,
-	                M.SERIE AS MATERIA_SERIE,
+	                D.NUMERO DISCIPLINA_NUMERO, 
+	                D.NOME DISCIPLINA_NOME,
+	
+	                M.NUMERO MATERIA_NUMERO, 
+	                M.NOME MATERIA_NOME,
+	                M.SERIE MATERIA_SERIE 	
 
-	                D.NUMERO AS DISCIPLINA_NUMERO,
-	                D.NOME AS DISCIPLINA_NOME
-
-                FROM 
-	                TBQUESTAO Q INNER JOIN TBMATERIA M 
+                FROM  
+	                TBTESTE T INNER JOIN TBDISCIPLINA D 
                 ON 
-	                Q.MATERIA_NUMERO = M.NUMERO INNER JOIN TBDISCIPLINA D 
+	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
                 ON 
-	                D.NUMERO = M.DISCIPLINA_NUMERO
+	                T.MATERIA_NUMERO = M.NUMERO
                 WHERE 
 	                Q.[NUMERO] = @NUMERO";
 

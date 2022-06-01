@@ -68,5 +68,10 @@ namespace GeradorTestes.Dominio.ModuloTeste
         {
             Questoes.Clear();
         }
+
+        public void ConfigurarMateria(Materia materia)
+        {
+            Materia = materia;
+        }
     }
 }
