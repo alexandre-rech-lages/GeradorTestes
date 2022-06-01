@@ -40,7 +40,7 @@ namespace GeradorTestes.Dominio.ModuloMateria
 
         public override string ToString()
         {
-            return string.Format("{0}, {1}", Nome, Serie);
+            return string.Format("{0}, {1}", Nome, Serie.GetDescription());
         }
 
         public void ConfigurarDisciplina(Disciplina disciplina)

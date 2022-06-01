@@ -55,7 +55,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 6,
                 Nome = "Vogais",
-                Serie = SerieMateriaEnum.Primeira
+                Serie = SerieMateriaEnum.PrimeiraSerie
             };
 
             vogais.ConfigurarDisciplina(portugues);
@@ -64,7 +64,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 4,
                 Nome = "Consoantes",
-                Serie = SerieMateriaEnum.Primeira
+                Serie = SerieMateriaEnum.PrimeiraSerie
             };
 
             consoantes.ConfigurarDisciplina(portugues);
@@ -131,7 +131,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 1,
                 Nome = "Adição de Unidades",
-                Serie = SerieMateriaEnum.Primeira
+                Serie = SerieMateriaEnum.PrimeiraSerie
             };
 
             adicaoUnidades.ConfigurarDisciplina(matematica);
@@ -140,7 +140,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 2,
                 Nome = "Adição de Dezenas",
-                Serie = SerieMateriaEnum.Primeira
+                Serie = SerieMateriaEnum.PrimeiraSerie
             };
 
             adicaoDezenas.ConfigurarDisciplina(matematica);
@@ -149,7 +149,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 3,
                 Nome = "Adição de Centenas",
-                Serie = SerieMateriaEnum.Segunda
+                Serie = SerieMateriaEnum.SegundaSerie
             };
 
             adicaoCentenas.ConfigurarDisciplina(matematica);
@@ -158,7 +158,7 @@ namespace GeradorTeste.WinApp
             {
                 Numero = 4,
                 Nome = "Adição de Milhar",
-                Serie = SerieMateriaEnum.Segunda
+                Serie = SerieMateriaEnum.SegundaSerie
             };
 
             adicaoMilhar.ConfigurarDisciplina(matematica);

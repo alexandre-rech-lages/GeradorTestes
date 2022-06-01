@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GeradorTestes.Dominio.ModuloQuestao
 {
@@ -6,55 +9,47 @@ namespace GeradorTestes.Dominio.ModuloQuestao
     {
         public ValidadorQuestao()
         {
-            //int qtdAlternativasCorretas = ObtemQuantidadeAlternativaCorreta();
+            RuleFor(x => x.Alternativas)
+                .Must(x => x.Count >= 3)
+                .WithMessage("No mínimo 3 alternativas precisa ser informada");
 
-            //if (qtdAlternativasCorretas == 1 && alternativa.Correta)
-            //{
-            //    throw new ApplicationException("Não pode cadastrar duas alternativas corretas para a questão: " + Numero);
-            //}
+            RuleFor(x => x.Alternativas)
+                .Must(x => x.Count <= 5)
+                .WithMessage("No máximo 5 alternativas pode ser informada");
 
-            //if (qtdAlternativasCorretas == 0 && EhUltimaPosicao() && alternativa.Correta == false)
-            //{
-            //    throw new ApplicationException(
-            //        "Ao menos uma alternativa correta deverá ser informado para a questão: " + Numero);
-            //}
+            RuleFor(x => x.Alternativas).Custom(ApenasUmaAlternativaCorreta);
 
+            RuleFor(x => x.Alternativas).Custom(NenhumaAlternativaCorreta);
+
+            RuleFor(x => x.Alternativas).Custom(AlternativasComValoresDuplicados);
         }
 
-        public void Valida()
+        private void AlternativasComValoresDuplicados(List<Alternativa> alternativas, ValidationContext<Questao> ctx)
         {
-            //if (string.IsNullOrEmpty(Enunciado))
-            //    throw new ApplicationException("O enunciado é obrigatório.");
+            var array = alternativas.Select(a => a.Resposta);
 
-            //if (string.IsNullOrEmpty(Bimestre.ToString()))
-            //    throw new ApplicationException("Selecione um bimestre.");
+            var dict = new Dictionary<string, int>();
 
-            //if (Materia == null)
-            //    throw new ApplicationException("Selecione uma Matéria");
+            foreach (var value in array)
+            {
+                dict.TryGetValue(value, out int count);
+                dict[value] = count + 1;
+            }            
 
-            //if (Alternativas.Count == 0)
-            //    throw new ApplicationException("0 Alternativas na lista.");
+            if (dict.Values.Any(x => x > 1))
+                ctx.AddFailure(new ValidationFailure("Alternativas", "Respostas iguais foram informadas nas alternativas"));
+        }
 
-            //if (ExisteAlternativaCorreta() == false)
-            //    throw new ApplicationException("Não há alternativa correta");
+        private void NenhumaAlternativaCorreta(List<Alternativa> alternativas, ValidationContext<Questao> ctx)
+        {
+            if (alternativas.Count(x => x.Correta) == 0)
+                ctx.AddFailure(new ValidationFailure("Alternativas", "Nenhuma alternativa correta foi informada"));
+        }
 
-            //foreach (Alternativa alternativa in Alternativas)
-            //{
-            //    alternativa.Valida();
-            //}
-
-            //int qtdAlternativasCorretas = ObtemQuantidadeAlternativaCorreta();
-
-            //if (qtdAlternativasCorretas > 1)
-            //{
-            //    throw new ApplicationException("Não pode cadastrar duas alternativas corretas para a questão: " + Numero);
-            //}
-
-            //if (qtdAlternativasCorretas == 0)
-            //{
-            //    throw new ApplicationException(
-            //        "Ao menos uma alternativa correta deverá ser informado para a questão: " + Numero);
-            //}
+        private void ApenasUmaAlternativaCorreta(List<Alternativa> alternativas, ValidationContext<Questao> ctx)
+        {
+            if (alternativas.Count(x => x.Correta) > 1)
+                ctx.AddFailure(new ValidationFailure("Alternativas", "Apenas uma alternativa pode ser correta"));
         }
     }
 }

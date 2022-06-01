@@ -77,12 +77,12 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
         private void rdbPrimeiraSerie_CheckedChanged(object sender, EventArgs e)
         {
-            CarregarMateriasPorSerie(SerieMateriaEnum.Primeira);
+            CarregarMateriasPorSerie(SerieMateriaEnum.PrimeiraSerie);
         }
 
         private void rdbSegundaSerie_CheckedChanged(object sender, EventArgs e)
         {
-            CarregarMateriasPorSerie(SerieMateriaEnum.Segunda);
+            CarregarMateriasPorSerie(SerieMateriaEnum.SegundaSerie);
         }
 
         private void cmbDisciplinas_SelectedIndexChanged(object sender, EventArgs e)
@@ -100,8 +100,6 @@ namespace GeradorTeste.WinApp.ModuloTeste
             {
                 cmbDisciplinas.Items.Add(disciplina);
             }
-
-            cmbDisciplinas.SelectedIndex = 0;
         }
 
         private void CarregarMaterias(List<Materia> materias)
@@ -127,8 +125,19 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
         private void chkRecuperacao_CheckedChanged(object sender, EventArgs e)
         {
-            cmbMaterias.Items.Clear();
-            cmbMaterias.Enabled = !chkRecuperacao.Checked;
+            if (chkRecuperacao.Checked)
+            {
+                cmbMaterias.Enabled = false;
+                cmbMaterias.Items.Clear();                
+            }
+            else
+            {
+                cmbMaterias.Enabled = true;
+                var disciplina = cmbDisciplinas.SelectedItem as Disciplina;
+
+                if (disciplina != null)
+                    CarregarMaterias(disciplina.Materias);
+            }
         }
     }
 }

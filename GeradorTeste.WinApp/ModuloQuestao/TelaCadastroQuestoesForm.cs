@@ -31,11 +31,17 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 txtEnunciado.Text = Questao.Enunciado;
                 cmbDisciplinas.SelectedItem = Questao.Materia?.Disciplina;
 
-                cmbMaterias.SelectedItem = Questao.Materia;
+                cmbMaterias.SelectedItem = Questao.Materia;                
 
+                int i = 0;
                 foreach (var item in questao.Alternativas)
                 {
                     listAlternativas.Items.Add(item);
+
+                    if (item.Correta)
+                        listAlternativas.SetItemChecked(i, true);
+
+                    i++;
                 }
             }
         }
@@ -65,10 +71,21 @@ namespace GeradorTeste.WinApp.ModuloQuestao
             Questao.Enunciado = txtEnunciado.Text;
             Questao.Materia = (Materia)cmbMaterias.SelectedItem;
 
+            int i = 0;
+            foreach (Alternativa item in listAlternativas.Items)
+            {
+                if (listAlternativas.GetItemChecked(i))
+                    item.Correta = true;
+                else
+                    item.Correta = false;
+
+                i++;
+            }
+
             var resultadoValidacao = GravarRegistro(questao);
 
             if (resultadoValidacao.IsValid == false)
-            {
+            {             
                 string erro = resultadoValidacao.Errors[0].ErrorMessage;
 
                 TelaPrincipalForm.Instancia.AtualizarRodape(erro);
@@ -107,9 +124,15 @@ namespace GeradorTeste.WinApp.ModuloQuestao
         {
             listAlternativas.Items.Clear();
 
+            int i = 0;
             foreach (var item in questao.Alternativas)
             {
                 listAlternativas.Items.Add(item);
+
+                if (item.Correta)
+                    listAlternativas.SetItemChecked(i, true);
+
+                i++;
             }
         }
 
@@ -120,31 +143,6 @@ namespace GeradorTeste.WinApp.ModuloQuestao
             if (disciplina != null)
                 CarregarMaterias(disciplina.Materias);
         }
-
-        private void chkAlternativaCorreta_CheckedChanged(object sender, EventArgs e)
-        {
-            var alternativa = listAlternativas.SelectedItem as Alternativa;
-
-            if (alternativa == null)
-                return;
-
-            if (chkAlternativaCorreta.Checked)
-            {
-                Questao.AtualizarAlternativaCorreta(alternativa);
-                RecarregarAlternativas();
-            }
-
-            else
-                alternativa.Correta = false;
-        }
-
-        private void listAlternativas_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var alternativa = listAlternativas.SelectedItem as Alternativa;
-            if (alternativa != null && alternativa.Correta)
-                chkAlternativaCorreta.Checked = true;
-            else
-                chkAlternativaCorreta.Checked = false;
-        }
+              
     }
 }

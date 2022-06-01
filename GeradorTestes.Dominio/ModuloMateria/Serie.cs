@@ -1,7 +1,13 @@
-﻿namespace GeradorTestes.Dominio.ModuloMateria
+﻿using System.ComponentModel;
+
+namespace GeradorTestes.Dominio.ModuloMateria
 {
     public enum SerieMateriaEnum
     {
-        Primeira, Segunda
+        [Description("1ª Série")]
+        PrimeiraSerie,
+
+        [Description("2ª Série")]
+        SegundaSerie
     }
 }

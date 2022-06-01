@@ -35,9 +35,6 @@ namespace GeradorTestes.Dominio.ModuloQuestao
 
         public override string ToString()
         {
-            if (Correta)
-                return string.Format($"({Letra}) -> {Resposta} [Correta]");
-
             return string.Format($"({Letra}) -> {Resposta}");
         }
 

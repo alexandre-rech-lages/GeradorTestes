@@ -45,9 +45,6 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnGravar = new System.Windows.Forms.Button();
             this.txtQtdQuestoes = new System.Windows.Forms.NumericUpDown();
-            this.rdbPrimeiraSerie = new System.Windows.Forms.RadioButton();
-            this.rdbSegundaSerie = new System.Windows.Forms.RadioButton();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtQtdQuestoes)).BeginInit();
@@ -135,7 +132,7 @@
             // chkRecuperacao
             // 
             this.chkRecuperacao.AutoSize = true;
-            this.chkRecuperacao.Location = new System.Drawing.Point(281, 120);
+            this.chkRecuperacao.Location = new System.Drawing.Point(102, 121);
             this.chkRecuperacao.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkRecuperacao.Name = "chkRecuperacao";
             this.chkRecuperacao.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -228,47 +225,11 @@
             0,
             0});
             // 
-            // rdbPrimeiraSerie
-            // 
-            this.rdbPrimeiraSerie.AutoSize = true;
-            this.rdbPrimeiraSerie.Checked = true;
-            this.rdbPrimeiraSerie.Location = new System.Drawing.Point(107, 120);
-            this.rdbPrimeiraSerie.Name = "rdbPrimeiraSerie";
-            this.rdbPrimeiraSerie.Size = new System.Drawing.Size(69, 19);
-            this.rdbPrimeiraSerie.TabIndex = 43;
-            this.rdbPrimeiraSerie.TabStop = true;
-            this.rdbPrimeiraSerie.Text = "Primeira";
-            this.rdbPrimeiraSerie.UseVisualStyleBackColor = true;
-            this.rdbPrimeiraSerie.CheckedChanged += new System.EventHandler(this.rdbPrimeiraSerie_CheckedChanged);
-            // 
-            // rdbSegundaSerie
-            // 
-            this.rdbSegundaSerie.AutoSize = true;
-            this.rdbSegundaSerie.Location = new System.Drawing.Point(182, 120);
-            this.rdbSegundaSerie.Name = "rdbSegundaSerie";
-            this.rdbSegundaSerie.Size = new System.Drawing.Size(71, 19);
-            this.rdbSegundaSerie.TabIndex = 44;
-            this.rdbSegundaSerie.Text = "Segunda";
-            this.rdbSegundaSerie.UseVisualStyleBackColor = true;
-            this.rdbSegundaSerie.CheckedChanged += new System.EventHandler(this.rdbSegundaSerie_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(56, 122);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 15);
-            this.label6.TabIndex = 45;
-            this.label6.Text = "Série:";
-            // 
             // TelaCriacaoTesteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(448, 519);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.rdbSegundaSerie);
-            this.Controls.Add(this.rdbPrimeiraSerie);
             this.Controls.Add(this.txtQtdQuestoes);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGravar);
@@ -314,8 +275,5 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnGravar;
         private System.Windows.Forms.NumericUpDown txtQtdQuestoes;
-        private System.Windows.Forms.RadioButton rdbPrimeiraSerie;
-        private System.Windows.Forms.RadioButton rdbSegundaSerie;
-        private System.Windows.Forms.Label label6;
     }
 }

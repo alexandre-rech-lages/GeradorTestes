@@ -38,15 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listAlternativas = new System.Windows.Forms.CheckedListBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnRemover = new System.Windows.Forms.ToolStripButton();
-            this.listAlternativas = new System.Windows.Forms.ListBox();
             this.btnAdicionar = new System.Windows.Forms.Button();
             this.txtResposta = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnGravar = new System.Windows.Forms.Button();
-            this.chkAlternativaCorreta = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -123,14 +122,23 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.toolStrip1);
             this.groupBox1.Controls.Add(this.listAlternativas);
-            this.groupBox1.Location = new System.Drawing.Point(18, 272);
+            this.groupBox1.Controls.Add(this.toolStrip1);
+            this.groupBox1.Location = new System.Drawing.Point(18, 240);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(456, 223);
+            this.groupBox1.Size = new System.Drawing.Size(456, 255);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alternativas";
+            // 
+            // listAlternativas
+            // 
+            this.listAlternativas.CheckOnClick = true;
+            this.listAlternativas.FormattingEnabled = true;
+            this.listAlternativas.Location = new System.Drawing.Point(8, 70);
+            this.listAlternativas.Name = "listAlternativas";
+            this.listAlternativas.Size = new System.Drawing.Size(442, 166);
+            this.listAlternativas.TabIndex = 34;
             // 
             // toolStrip1
             // 
@@ -152,16 +160,6 @@
             this.btnRemover.Size = new System.Drawing.Size(58, 37);
             this.btnRemover.Text = "Remover";
             this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
-            // 
-            // listAlternativas
-            // 
-            this.listAlternativas.FormattingEnabled = true;
-            this.listAlternativas.ItemHeight = 15;
-            this.listAlternativas.Location = new System.Drawing.Point(13, 70);
-            this.listAlternativas.Name = "listAlternativas";
-            this.listAlternativas.Size = new System.Drawing.Size(431, 139);
-            this.listAlternativas.TabIndex = 31;
-            this.listAlternativas.SelectedIndexChanged += new System.EventHandler(this.listAlternativas_SelectedIndexChanged);
             // 
             // btnAdicionar
             // 
@@ -211,23 +209,11 @@
             this.btnGravar.UseVisualStyleBackColor = true;
             this.btnGravar.Click += new System.EventHandler(this.btnGravar_Click);
             // 
-            // chkAlternativaCorreta
-            // 
-            this.chkAlternativaCorreta.AutoSize = true;
-            this.chkAlternativaCorreta.Location = new System.Drawing.Point(85, 234);
-            this.chkAlternativaCorreta.Name = "chkAlternativaCorreta";
-            this.chkAlternativaCorreta.Size = new System.Drawing.Size(130, 19);
-            this.chkAlternativaCorreta.TabIndex = 33;
-            this.chkAlternativaCorreta.Text = "Alternatica Correta?";
-            this.chkAlternativaCorreta.UseVisualStyleBackColor = true;
-            this.chkAlternativaCorreta.CheckedChanged += new System.EventHandler(this.chkAlternativaCorreta_CheckedChanged);
-            // 
             // TelaCadastroQuestoesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 572);
-            this.Controls.Add(this.chkAlternativaCorreta);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGravar);
             this.Controls.Add(this.groupBox1);
@@ -263,7 +249,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListBox listAlternativas;
         private System.Windows.Forms.Button btnAdicionar;
         private System.Windows.Forms.TextBox txtResposta;
         private System.Windows.Forms.Label label5;
@@ -272,6 +257,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnRemover;
         private System.Windows.Forms.ComboBox cmbAlternativaCorreta;
-        private System.Windows.Forms.CheckBox chkAlternativaCorreta;
+        private System.Windows.Forms.CheckedListBox listAlternativas;
     }
 }
