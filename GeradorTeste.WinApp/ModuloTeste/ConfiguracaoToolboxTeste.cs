@@ -10,12 +10,10 @@
 
         public override string TooltipExcluir => "Excluir um Teste existente";
 
-        public override string TooltipGerarPdf => "Gerar PDF do Teste";
-
         public override string TooltipDuplicar => "Duplicar o Teste selecionado";
 
-        public override bool GerarPdfHabilitado => true;
+        public override bool EditarHabilitado => false;
 
-
+        public override bool DuplicarHabilitado => true;
     }
 }

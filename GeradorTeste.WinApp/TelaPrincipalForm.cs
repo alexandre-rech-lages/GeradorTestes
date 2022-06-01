@@ -108,6 +108,11 @@ namespace GeradorTeste.WinApp
             controlador.GerarPdf();
         }
 
+        private void btnDuplicar_Click(object sender, EventArgs e)
+        {
+            controlador.Duplicar();
+        }
+
         private void ConfigurarBotoes(ConfiguracaoToolboxBase configuracao)
         {
             btnInserir.Enabled = configuracao.InserirHabilitado;
@@ -183,6 +188,6 @@ namespace GeradorTeste.WinApp
             controladores.Add("Testes", new ControladorTeste(repositorioTeste, repositorioQuestao, repositorioDisciplina, repositorioMateria));
         }
 
-
+       
     }
 }

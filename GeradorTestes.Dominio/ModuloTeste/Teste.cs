@@ -19,7 +19,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public List<Questao> Questoes { get; set; }
 
-        public bool Recuperacao { get; set; }
+        public bool Provao { get; set; }
 
         public DateTime DataGeracao { get; set; }
 
@@ -48,7 +48,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public void SortearQuestoes()
         {
-            if (Recuperacao)
+            if (Provao)
                 Questoes = Disciplina.TodasQuestoes.Randomize(QuantidadeQuestoes).ToList();
             else
                 Questoes = Materia.Questoes.Randomize(QuantidadeQuestoes).ToList();
@@ -56,6 +56,16 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public override void Atualizar(Teste teste)
         {
+        }
+
+        public Teste Clone()
+        {
+            return MemberwiseClone() as Teste;
+        }
+
+        public void RemoverQuestoes()
+        {
+            Questoes.Clear();
         }
     }
 }

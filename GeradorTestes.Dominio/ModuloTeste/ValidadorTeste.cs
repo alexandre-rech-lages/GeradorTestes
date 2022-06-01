@@ -15,7 +15,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
             RuleFor(x => x.Titulo)
                 .NotNull().NotEmpty();
 
-            When(x => x.Recuperacao == true, () =>
+            When(x => x.Provao == true, () =>
             {
                 RuleFor(x => x.Materia).Null();
             }).Otherwise(() =>

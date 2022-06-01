@@ -1,4 +1,5 @@
 ﻿using GeradorTestes.Dominio.ModuloTeste;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -24,7 +25,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
                 new DataGridViewTextBoxColumn { DataPropertyName = "Disciplina.Nome", HeaderText = "Disciplina", FillWeight=20F },
 
-                new DataGridViewTextBoxColumn { DataPropertyName = "Recuperacao", HeaderText = "Recuperação", FillWeight=25F },
+                new DataGridViewTextBoxColumn { DataPropertyName = "Provao", HeaderText = "Tipo", FillWeight=25F },
 
                 new DataGridViewTextBoxColumn { DataPropertyName = "Materia.Nome", HeaderText = "Matéria", FillWeight=25F },
 
@@ -34,7 +35,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
             return colunas;
         }
 
-        public int ObtemNumeroTarefaSelecionado()
+        public int ObtemNumeroTesteSelecionado()
         {
             return grid.SelecionarNumero<int>();
         }
@@ -45,10 +46,10 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
             foreach (var teste in testes)
             {
-                string disciplina = teste.Recuperacao ? teste.Disciplina.Nome : teste.Materia.Disciplina.Nome;
+                string disciplina = teste.Provao ? teste.Disciplina.Nome : teste.Materia.Disciplina.Nome;
 
                 grid.Rows.Add(teste.Numero, teste.Titulo, disciplina,
-                    teste.Recuperacao ? "Provão" : "", teste.Materia?.Nome);
+                    teste.Provao ? "Provão" : "Fixação da Matéria", teste.Materia?.Nome);
             }
         }
     }

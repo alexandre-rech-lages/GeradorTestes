@@ -8,9 +8,7 @@ namespace GeradorTeste.WinApp
         public abstract void Editar();
         public abstract void Excluir();
 
-        public virtual void AdicionarItens() { }
-
-        public virtual void AtualizarItens() { }
+        public virtual void Duplicar() { }
 
         public virtual void Filtrar() { }
 

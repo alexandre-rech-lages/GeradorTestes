@@ -37,7 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtTitulo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.chkRecuperacao = new System.Windows.Forms.CheckBox();
+            this.chkProvao = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSortear = new System.Windows.Forms.ToolStripButton();
@@ -129,19 +129,19 @@
             this.label5.TabIndex = 33;
             this.label5.Text = "Título:";
             // 
-            // chkRecuperacao
+            // chkProvao
             // 
-            this.chkRecuperacao.AutoSize = true;
-            this.chkRecuperacao.Location = new System.Drawing.Point(102, 121);
-            this.chkRecuperacao.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.chkRecuperacao.Name = "chkRecuperacao";
-            this.chkRecuperacao.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkRecuperacao.Size = new System.Drawing.Size(148, 19);
-            this.chkRecuperacao.TabIndex = 38;
-            this.chkRecuperacao.Text = "?Prova de Recuperação";
-            this.chkRecuperacao.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkRecuperacao.UseVisualStyleBackColor = true;
-            this.chkRecuperacao.CheckedChanged += new System.EventHandler(this.chkRecuperacao_CheckedChanged);
+            this.chkProvao.AutoSize = true;
+            this.chkProvao.Location = new System.Drawing.Point(102, 121);
+            this.chkProvao.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chkProvao.Name = "chkProvao";
+            this.chkProvao.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkProvao.Size = new System.Drawing.Size(71, 19);
+            this.chkProvao.TabIndex = 38;
+            this.chkProvao.Text = "? Provão";
+            this.chkProvao.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkProvao.UseVisualStyleBackColor = true;
+            this.chkProvao.CheckedChanged += new System.EventHandler(this.chkProvao_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -234,7 +234,7 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGravar);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.chkRecuperacao);
+            this.Controls.Add(this.chkProvao);
             this.Controls.Add(this.txtTitulo);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmbMaterias);
@@ -267,7 +267,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTitulo;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox chkRecuperacao;
+        private System.Windows.Forms.CheckBox chkProvao;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnSortear;

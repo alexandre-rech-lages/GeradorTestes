@@ -37,6 +37,7 @@
             this.toolbox = new System.Windows.Forms.ToolStrip();
             this.btnInserir = new System.Windows.Forms.ToolStripButton();
             this.btnEditar = new System.Windows.Forms.ToolStripButton();
+            this.btnDuplicar = new System.Windows.Forms.ToolStripButton();
             this.btnExcluir = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnGerarPdf = new System.Windows.Forms.ToolStripButton();
@@ -47,7 +48,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.labelRodape = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelRegistros = new System.Windows.Forms.Panel();
-            this.btnDuplicar = new System.Windows.Forms.ToolStripButton();
             this.menu.SuspendLayout();
             this.toolbox.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -152,6 +152,18 @@
             this.btnEditar.Text = "Editar";
             this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
             // 
+            // btnDuplicar
+            // 
+            this.btnDuplicar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDuplicar.Image = global::GeradorTeste.WinApp.Properties.Resources.file_copy_FILL0_wght400_GRAD0_opsz24;
+            this.btnDuplicar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnDuplicar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDuplicar.Name = "btnDuplicar";
+            this.btnDuplicar.Padding = new System.Windows.Forms.Padding(5);
+            this.btnDuplicar.Size = new System.Drawing.Size(38, 38);
+            this.btnDuplicar.Text = "Duplicar";
+            this.btnDuplicar.Click += new System.EventHandler(this.btnDuplicar_Click);
+            // 
             // btnExcluir
             // 
             this.btnExcluir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -232,17 +244,6 @@
             this.panelRegistros.Name = "panelRegistros";
             this.panelRegistros.Size = new System.Drawing.Size(686, 334);
             this.panelRegistros.TabIndex = 3;
-            // 
-            // btnDuplicar
-            // 
-            this.btnDuplicar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDuplicar.Image = global::GeradorTeste.WinApp.Properties.Resources.file_copy_FILL0_wght400_GRAD0_opsz24;
-            this.btnDuplicar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnDuplicar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDuplicar.Name = "btnDuplicar";
-            this.btnDuplicar.Padding = new System.Windows.Forms.Padding(5);
-            this.btnDuplicar.Size = new System.Drawing.Size(38, 38);
-            this.btnDuplicar.Text = "Duplicar";
             // 
             // TelaPrincipalForm
             // 

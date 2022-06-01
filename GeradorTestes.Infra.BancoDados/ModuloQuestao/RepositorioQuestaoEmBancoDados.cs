@@ -383,7 +383,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
         //    return questoesSorteadas;
         //}
 
-        //public List<Questao> SortearQuestoesRecuperacao(Disciplina disciplina, int quantidade)
+        //public List<Questao> SortearQuestoesProvao(Disciplina disciplina, int quantidade)
         //{
         //    {
         //        throw new NotImplementedException();

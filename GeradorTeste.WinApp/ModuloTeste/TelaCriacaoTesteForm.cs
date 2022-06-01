@@ -27,6 +27,12 @@ namespace GeradorTeste.WinApp.ModuloTeste
             set
             {
                 teste = value;
+
+                txtTitulo.Text = teste.Titulo;
+                cmbDisciplinas.SelectedItem = teste.Disciplina;
+                cmbMaterias.SelectedItem = teste.Materia;
+                chkProvao.Checked = teste.Provao;
+                txtQtdQuestoes.Value = teste.QuantidadeQuestoes;
             }
         }
 
@@ -35,7 +41,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
             teste.Titulo = txtTitulo.Text;
             teste.Disciplina = cmbDisciplinas.SelectedItem as Disciplina;
             teste.Materia = cmbMaterias.SelectedItem as Materia;
-            teste.Recuperacao = chkRecuperacao.Checked;
+            teste.Provao = chkProvao.Checked;
             teste.QuantidadeQuestoes = (int)txtQtdQuestoes.Value;
 
             ValidadorTeste validadorTeste = new ValidadorTeste();
@@ -123,9 +129,9 @@ namespace GeradorTeste.WinApp.ModuloTeste
             }
         }
 
-        private void chkRecuperacao_CheckedChanged(object sender, EventArgs e)
+        private void chkProvao_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkRecuperacao.Checked)
+            if (chkProvao.Checked)
             {
                 cmbMaterias.Enabled = false;
                 cmbMaterias.Items.Clear();                
