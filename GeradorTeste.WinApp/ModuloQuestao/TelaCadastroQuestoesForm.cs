@@ -29,9 +29,8 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 questao = value;
                 txtNumero.Text = Questao.Numero.ToString();
                 txtEnunciado.Text = Questao.Enunciado;
-                cmbDisciplinas.SelectedItem = Questao.Materia?.Disciplina;
-
-                cmbMaterias.SelectedItem = Questao.Materia;                
+                cmbDisciplinas.SelectedItem = Questao.Materia.Disciplina;
+                cmbMaterias.SelectedItem = Questao.Materia;
 
                 int i = 0;
                 foreach (var item in questao.Alternativas)
@@ -85,7 +84,7 @@ namespace GeradorTeste.WinApp.ModuloQuestao
             var resultadoValidacao = GravarRegistro(questao);
 
             if (resultadoValidacao.IsValid == false)
-            {             
+            {
                 string erro = resultadoValidacao.Errors[0].ErrorMessage;
 
                 TelaPrincipalForm.Instancia.AtualizarRodape(erro);
@@ -143,6 +142,6 @@ namespace GeradorTeste.WinApp.ModuloQuestao
             if (disciplina != null)
                 CarregarMaterias(disciplina.Materias);
         }
-              
+
     }
 }

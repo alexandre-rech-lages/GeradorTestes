@@ -1,4 +1,5 @@
-﻿using GeradorTestes.Dominio.ModuloMateria;
+﻿using GeradorTestes.Dominio;
+using GeradorTestes.Dominio.ModuloMateria;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -41,7 +42,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
 
             foreach (var materia in materias)
             {
-                grid.Rows.Add(materia.Numero, materia.Nome, materia.Disciplina.Nome, materia.Serie);
+                grid.Rows.Add(materia.Numero, materia.Nome, materia.Disciplina.Nome, materia.Serie.GetDescription());
             }
         }
     }

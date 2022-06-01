@@ -64,7 +64,6 @@ namespace GeradorTestes.Dominio.ModuloDisciplina
         {
             return obj is Disciplina disciplina &&
                    Numero == disciplina.Numero &&
-                   EqualityComparer<List<Materia>>.Default.Equals(Materias, disciplina.Materias) &&
                    Nome == disciplina.Nome;
         }
 

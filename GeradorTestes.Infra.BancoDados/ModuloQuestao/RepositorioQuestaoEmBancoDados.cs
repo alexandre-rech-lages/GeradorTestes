@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 {
-    public class RepositorioQuestaoEmBancoDeDados : IRepositorioQuestao
+    public class RepositorioQuestaoEmBancoDados : IRepositorioQuestao
     {
 
         private const string enderecoBanco =
@@ -52,6 +52,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
 	                M.NUMERO AS MATERIA_NUMERO,
 	                M.NOME AS MATERIA_NOME,
+	                M.SERIE AS MATERIA_SERIE,
 
 	                D.NUMERO AS DISCIPLINA_NUMERO,
 	                D.NOME AS DISCIPLINA_NOME
@@ -70,6 +71,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
 	                M.NUMERO AS MATERIA_NUMERO,
 	                M.NOME AS MATERIA_NOME,
+	                M.SERIE AS MATERIA_SERIE,
 
 	                D.NUMERO AS DISCIPLINA_NUMERO,
 	                D.NOME AS DISCIPLINA_NOME
@@ -79,20 +81,24 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
                 ON 
 	                Q.MATERIA_NUMERO = M.NUMERO INNER JOIN TBDISCIPLINA D 
                 ON 
-	                D.NUMERO = M.DISCIPLINA_NUMERO";
+	                D.NUMERO = M.DISCIPLINA_NUMERO
+                WHERE 
+	                Q.[NUMERO] = @NUMERO";
 
         private const string sqlInserirAlternativas =
            @"INSERT INTO [TBALTERNATIVA]
                     (
 		                [QUESTAO_NUMERO],
 		                [LETRA],
-		                [DESCRICAO]
+		                [RESPOSTA],
+		                [CORRETA]
 	                )
                      VALUES
                     (
 		                @QUESTAO_NUMERO,
 		                @LETRA,
-		                @DESCRICAO
+		                @RESPOSTA,
+		                @CORRETA
 	                ); SELECT SCOPE_IDENTITY();";
 
         private const string sqlSelecionarAlternativas =
@@ -100,45 +106,47 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 	                [NUMERO],
                     [QUESTAO_NUMERO],
                     [LETRA],
-                    [DESCRICAO]
+                    [RESPOSTA],
+                    [CORRETA]
                   FROM 
 	                [TBALTERNATIVA]
                   WHERE 
 	                [QUESTAO_NUMERO] = @QUESTAO_NUMERO";
 
-        private const string sqlExcluirAlternativa =
+        private const string sqlExcluirAlternativas =
           @"DELETE FROM [TBALTERNATIVA]
 		            WHERE
 			            [QUESTAO_NUMERO] = @QUESTAO_NUMERO";
 
         #endregion
 
-        public ValidationResult Inserir(Questao novoRegistro)
+        public ValidationResult Inserir(Questao questao)
         {
-            var resultadoValidacao = Validar(novoRegistro);
+            var resultadoValidacao = Validar(questao);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
-
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
             SqlCommand comandoInsercao = new SqlCommand(sqlInserir, conexaoComBanco);
 
-            ConfigurarParametrosQuestao(novoRegistro, comandoInsercao);
+            ConfigurarParametrosQuestao(questao, comandoInsercao);
 
             conexaoComBanco.Open();
             var id = comandoInsercao.ExecuteScalar();
-            novoRegistro.Numero = Convert.ToInt32(id);
+            questao.Numero = Convert.ToInt32(id);
 
             conexaoComBanco.Close();
+
+            AdicionarAlternativas(questao);
 
             return resultadoValidacao;
         }
 
-        public ValidationResult Editar(Questao registro)
+        public ValidationResult Editar(Questao questao)
         {
-            var resultadoValidacao = Validar(registro);
+            var resultadoValidacao = Validar(questao);
 
             if (resultadoValidacao.IsValid == false)
                 return resultadoValidacao;
@@ -147,20 +155,22 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
             SqlCommand comandoEdicao = new SqlCommand(sqlEditar, conexaoComBanco);
 
-            ConfigurarParametrosQuestao(registro, comandoEdicao);
+            ConfigurarParametrosQuestao(questao, comandoEdicao);
 
             conexaoComBanco.Open();
             comandoEdicao.ExecuteNonQuery();
             conexaoComBanco.Close();
 
-            AdicionarAlternativas(registro, registro.Alternativas);
+            RemoverAlternativas(questao);
+
+            AdicionarAlternativas(questao);
 
             return resultadoValidacao;
         }
 
         public ValidationResult Excluir(Questao registro)
         {
-            ExcluirAlternativa(registro);
+            RemoverAlternativas(registro);
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
@@ -229,6 +239,15 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             return questoes;
         }
 
+      
+        public AbstractValidator<Questao> ObterValidador()
+        {
+            return new ValidadorQuestao();
+
+        }
+
+        #region Métodos Privados
+
         private Questao ConverterParaQuestao(SqlDataReader leitorQuestao)
         {
             int numero = Convert.ToInt32(leitorQuestao["NUMERO"]);
@@ -236,6 +255,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
             int numeroMateria = Convert.ToInt32(leitorQuestao["MATERIA_NUMERO"]);
             string nomeMateria = Convert.ToString(leitorQuestao["MATERIA_NOME"]);
+            SerieMateriaEnum serieMateria = (SerieMateriaEnum)leitorQuestao["MATERIA_SERIE"];
 
             int numeroDisciplina = Convert.ToInt32(leitorQuestao["DISCIPLINA_NUMERO"]);
             string nomeDisciplina = Convert.ToString(leitorQuestao["DISCIPLINA_NOME"]);
@@ -243,20 +263,24 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             var questao = new Questao
             {
                 Numero = numero,
-                Enunciado = enunciado,
-
-                Materia = new Materia
-                {
-                    Numero = numeroMateria,
-                    Nome = nomeMateria,
-
-                    Disciplina = new Disciplina
-                    {
-                        Numero = numeroDisciplina,
-                        Nome = nomeDisciplina
-                    }
-                }
+                Enunciado = enunciado
             };
+
+            var materia = new Materia
+            {
+                Numero = numeroMateria,
+                Nome = nomeMateria,
+                Serie = serieMateria
+            };
+
+            var disciplina = new Disciplina
+            {
+                Numero = numeroDisciplina,
+                Nome = nomeDisciplina
+            };
+
+            materia.ConfigurarDisciplina(disciplina);
+            questao.ConfigurarMateria(materia);
 
             return questao;
         }
@@ -266,12 +290,6 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             comando.Parameters.AddWithValue("NUMERO", novaQuestao.Numero);
             comando.Parameters.AddWithValue("MATERIA_NUMERO", novaQuestao.Materia.Numero);
             comando.Parameters.AddWithValue("ENUNCIADO", novaQuestao.Enunciado);
-        }
-
-        public AbstractValidator<Questao> ObterValidador()
-        {
-            return new ValidadorQuestao();
-
         }
 
         private ValidationResult Validar(Questao registro)
@@ -293,27 +311,21 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             return resultadoValidacao;
         }
 
-        public void AdicionarAlternativas(Questao questao, List<Alternativa> alternativas)
+        private void AdicionarAlternativas(Questao questao)
         {
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
             conexaoComBanco.Open();
 
-            foreach (Alternativa alternativa in alternativas)
+            foreach (Alternativa alternativa in questao.Alternativas)
             {
-                bool alternativaAdicionada = questao.AdicionarAlternativa(alternativa);
+                SqlCommand comandoInsercao = new SqlCommand(sqlInserirAlternativas, conexaoComBanco);
 
-                if (alternativaAdicionada)
-                {
-                    SqlCommand comandoInsercao = new SqlCommand(sqlInserirAlternativas, conexaoComBanco);
-
-                    ConfigurarParametrosAlternativa(alternativa, comandoInsercao);
-                    var numero = comandoInsercao.ExecuteScalar();
-                    alternativa.Numero = Convert.ToInt32(numero);
-                }
+                ConfigurarParametrosAlternativa(alternativa, comandoInsercao);
+                var numero = comandoInsercao.ExecuteScalar();
+                alternativa.Numero = Convert.ToInt32(numero);
             }
 
             conexaoComBanco.Close();
-
         }
 
         private void ConfigurarParametrosAlternativa(Alternativa alternativa, SqlCommand comando)
@@ -321,6 +333,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             comando.Parameters.AddWithValue("NUMERO", alternativa.Numero);
             comando.Parameters.AddWithValue("LETRA", alternativa.Letra);
             comando.Parameters.AddWithValue("RESPOSTA", alternativa.Resposta);
+            comando.Parameters.AddWithValue("CORRETA", alternativa.Correta);
             comando.Parameters.AddWithValue("QUESTAO_NUMERO", alternativa.Questao.Numero);
         }
 
@@ -334,7 +347,6 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
             conexaoComBanco.Open();
             SqlDataReader leitorAlternativa = comandoSelecao.ExecuteReader();
-
 
             while (leitorAlternativa.Read())
             {
@@ -351,66 +363,24 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             var numero = Convert.ToInt32(leitorItemTarefa["NUMERO"]);
             var letra = Convert.ToChar(leitorItemTarefa["LETRA"]);
             var resposta = Convert.ToString(leitorItemTarefa["RESPOSTA"]);
+            var correta = Convert.ToBoolean(leitorItemTarefa["CORRETA"]);
 
             var alternativa = new Alternativa
             {
                 Numero = numero,
                 Letra = letra,
-                Resposta = resposta
+                Resposta = resposta,
+                Correta = correta
             };
 
             return alternativa;
         }
 
-        //public List<Questao> Sortear(Materia materia, int quantidade)
-        //{
-        //    int limite = 0;
-        //    List<Questao> questoesSorteadas = new List<Questao>();
-        //    List<Questao> questoesMateriaSelecionada = SelecionarTodos().Where(x => x.Materia.Nome.Equals(materia.Nome)).ToList();
-
-        //    Random random = new Random();
-        //    List<Questao> questoes = questoesMateriaSelecionada.OrderBy(item => random.Next()).ToList();
-
-        //    foreach (Questao questao in questoes)
-        //    {
-        //        questoesSorteadas.Add(questao);
-        //        limite++;
-        //        if (limite == quantidade)
-        //            break;
-        //    }
-
-
-        //    return questoesSorteadas;
-        //}
-
-        //public List<Questao> SortearQuestoesProvao(Disciplina disciplina, int quantidade)
-        //{
-        //    {
-        //        throw new NotImplementedException();
-        //        int limite = 0;
-        //        List<Questao> questoesSorteadas = new List<Questao>();
-        //        List<Questao> questoesDisciplinaSelecionada = SelecionarTodos().Where(x => x.Disciplina.Nome.Equals(disciplina.Nome)).ToList();
-
-        //        Random random = new Random();
-        //        List<Questao> questoes = questoesDisciplinaSelecionada.OrderBy(item => random.Next()).ToList();
-
-        //        foreach (Questao questao in questoes)
-        //        {
-        //            questoesSorteadas.Add(questao);
-        //            limite++;
-        //            if (limite == quantidade)
-        //                break;
-        //        }
-
-        //        return questoesSorteadas;
-        //    }
-        //}
-
-        private void ExcluirAlternativa(Questao questao)
+        private void RemoverAlternativas(Questao questao)
         {
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
-            SqlCommand comandoExclusao = new SqlCommand(sqlExcluirAlternativa, conexaoComBanco);
+            SqlCommand comandoExclusao = new SqlCommand(sqlExcluirAlternativas, conexaoComBanco);
 
             comandoExclusao.Parameters.AddWithValue("QUESTAO_NUMERO", questao.Numero);
 
@@ -420,6 +390,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             conexaoComBanco.Close();
         }
 
+        #endregion
     }
 }
 

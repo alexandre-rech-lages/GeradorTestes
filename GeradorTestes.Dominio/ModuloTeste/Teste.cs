@@ -13,6 +13,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
         public Teste()
         {
             DataGeracao = DateTime.Now;
+            Questoes = new List<Questao>();
         }
 
         public string Titulo { get; set; }

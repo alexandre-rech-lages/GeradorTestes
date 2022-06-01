@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +49,7 @@ namespace GeradorTestes.Dominio.ModuloQuestao
             {
                 dict.TryGetValue(value, out int count);
                 dict[value] = count + 1;
-            }            
+            }
 
             if (dict.Values.Any(x => x > 1))
                 ctx.AddFailure(new ValidationFailure("Alternativas", "Respostas iguais foram informadas nas alternativas"));

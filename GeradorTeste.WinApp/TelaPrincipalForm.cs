@@ -1,8 +1,4 @@
 ﻿using eAgenda.Infra.Arquivos;
-using eAgenda.Infra.Arquivos.ModuloDisciplina;
-using eAgenda.Infra.Arquivos.ModuloMateria;
-using eAgenda.Infra.Arquivos.ModuloQuestao;
-using eAgenda.Infra.Arquivos.ModuloTeste;
 using GeradorTeste.WinApp.ModuloDisciplina;
 using GeradorTeste.WinApp.ModuloMateria;
 using GeradorTeste.WinApp.ModuloQuestao;
@@ -11,6 +7,10 @@ using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using GeradorTestes.Dominio.ModuloQuestao;
 using GeradorTestes.Dominio.ModuloTeste;
+using GeradorTestes.Infra.BancoDados.ModuloDisciplina;
+using GeradorTestes.Infra.BancoDados.ModuloMateria;
+using GeradorTestes.Infra.BancoDados.ModuloQuestao;
+using GeradorTestes.Infra.BancoDados.ModuloTeste;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -181,11 +181,10 @@ namespace GeradorTeste.WinApp
 
         private void InicializarControladores()
         {
-            IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaEmArquivo(contextoDados);
-            IRepositorioMateria repositorioMateria = new RepositorioMateriaEmArquivo(contextoDados);
-
-            IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoEmArquivo(contextoDados);
-            IRepositorioTeste repositorioTeste = new RepositorioTesteEmArquivo(contextoDados);
+            IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaEmBancoDados();
+            IRepositorioMateria repositorioMateria = new RepositorioMateriaEmBancoDados();
+            IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoEmBancoDados();
+            IRepositorioTeste repositorioTeste = new RepositorioTesteEmBancoDados();
 
             controladores = new Dictionary<string, ControladorBase>();
 
@@ -194,7 +193,5 @@ namespace GeradorTeste.WinApp
             controladores.Add("Questões", new ControladorQuestao(repositorioQuestao, repositorioDisciplina));
             controladores.Add("Testes", new ControladorTeste(repositorioTeste, repositorioQuestao, repositorioDisciplina, repositorioMateria));
         }
-
-       
     }
 }

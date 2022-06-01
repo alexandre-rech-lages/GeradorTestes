@@ -181,7 +181,7 @@ namespace GeradorTeste.WinApp
                     continue;
                 }
 
-                int fator, posicaoMateria;                
+                int fator, posicaoMateria;
 
                 if (i <= 10)
                 {
@@ -209,7 +209,7 @@ namespace GeradorTeste.WinApp
 
                 contexto.Questoes.Add(q);
 
-                
+
             }
         }
 

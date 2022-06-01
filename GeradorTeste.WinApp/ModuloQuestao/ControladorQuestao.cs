@@ -19,7 +19,7 @@ namespace GeradorTeste.WinApp.ModuloQuestao
 
         public override void Inserir()
         {
-            List<Disciplina> disciplinas = repositorioDisciplina.SelecionarTodos();
+            var disciplinas = repositorioDisciplina.SelecionarTodos();
 
             var tela = new TelaCadastroQuestoesForm(disciplinas);
 
@@ -48,7 +48,7 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 return;
             }
 
-            List<Disciplina> disciplinas = repositorioDisciplina.SelecionarTodos();
+            var disciplinas = repositorioDisciplina.SelecionarTodos();
 
             var tela = new TelaCadastroQuestoesForm(disciplinas);
 

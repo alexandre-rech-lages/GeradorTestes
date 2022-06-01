@@ -42,7 +42,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
                 CarregarTestes();
             }
         }
-       
+
         public override void Duplicar()
         {
             var numero = tabelaTestes.ObtemNumeroTesteSelecionado();

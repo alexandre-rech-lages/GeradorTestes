@@ -1,5 +1,7 @@
 ﻿using FluentValidation.Results;
 using GeradorTestes.Dominio.ModuloDisciplina;
+using GeradorTestes.Dominio.ModuloMateria;
+using GeradorTestes.Dominio.ModuloQuestao;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -54,6 +56,25 @@ namespace GeradorTestes.Infra.BancoDados.ModuloDisciplina
 		        WHERE
                     [NUMERO] = @NUMERO";
 
+        private const string sqlSelecionarMateriasDaDisciplina =
+            @"SELECT 
+		            [NUMERO] MATERIA_NUMERO, 
+		            [NOME] MATERIA_NOME, 
+                    [SERIE] MATERIA_SERIE
+	            FROM 
+		            [TBMATERIA]
+		        WHERE
+                    [DISCIPLINA_NUMERO] = @DISCIPLINA_NUMERO";
+
+        private const string sqlSelecionarQuestoesDaMateria =
+            @"SELECT 
+		            [NUMERO] QUESTAO_NUMERO, 
+		            [ENUNCIADO] QUESTAO_ENUNCIADO
+	            FROM 
+		            [TBQUESTAO]
+		        WHERE
+                    [MATERIA_NUMERO] = @MATERIA_NUMERO";
+
         #endregion
 
         public ValidationResult Inserir(Disciplina novaDisciplina)
@@ -75,6 +96,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloDisciplina
 
             novaDisciplina.Numero = Convert.ToInt32(numero);
             conexao.Close();
+
             return resultadoValidacao;
 
         }
@@ -137,12 +159,86 @@ namespace GeradorTestes.Infra.BancoDados.ModuloDisciplina
             {
                 Disciplina disciplina = ConverterParaDisciplina(leitorDisciplina);
 
+                CarregarMaterias(disciplina);
+
                 disciplinas.Add(disciplina);
             }
 
             conexaoComBanco.Close();
 
             return disciplinas;
+        }
+
+        private void CarregarMaterias(Disciplina disciplina)
+        {
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarMateriasDaDisciplina, conexaoComBanco);
+
+            comandoSelecao.Parameters.AddWithValue("DISCIPLINA_NUMERO", disciplina.Numero);
+
+            conexaoComBanco.Open();
+            SqlDataReader leitorMateria = comandoSelecao.ExecuteReader();
+
+            while (leitorMateria.Read())
+            {
+                Materia materia = ConverterParaMateria(leitorMateria);
+
+                CarregarQuestoes(materia);
+
+                disciplina.AdicionarMateria(materia);
+            }
+
+            conexaoComBanco.Close();
+        }
+
+        private void CarregarQuestoes(Materia materia)
+        {
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarQuestoesDaMateria, conexaoComBanco);
+
+            comandoSelecao.Parameters.AddWithValue("MATERIA_NUMERO", materia.Numero);
+
+            conexaoComBanco.Open();
+            SqlDataReader leitorQuestoes = comandoSelecao.ExecuteReader();
+
+            while (leitorQuestoes.Read())
+            {
+                Questao questao = ConverterParaQuestao(leitorQuestoes);
+
+                materia.AdicionaQuestao(questao);                                        
+            }
+
+            conexaoComBanco.Close();
+        }
+
+        private Questao ConverterParaQuestao(SqlDataReader leitorQuestoes)
+        {
+            int numero = Convert.ToInt32(leitorQuestoes["QUESTAO_NUMERO"]);
+            string enunciado = Convert.ToString(leitorQuestoes["QUESTAO_ENUNCIADO"]);
+
+            return new Questao
+            {
+                Numero = numero,
+                Enunciado = enunciado
+            };
+        }
+
+        private Materia ConverterParaMateria(SqlDataReader leitorMateria)
+        {
+            int numero = Convert.ToInt32(leitorMateria["MATERIA_NUMERO"]);
+            string nome = Convert.ToString(leitorMateria["MATERIA_NOME"]);
+            var serie = (SerieMateriaEnum)leitorMateria["MATERIA_SERIE"];
+
+            var materia = new Materia
+            {
+                Numero = numero,
+                Nome = nome,
+                Serie = serie
+            };
+
+            return materia;
         }
 
         public Disciplina SelecionarPorNumero(int numero)
@@ -161,6 +257,8 @@ namespace GeradorTestes.Infra.BancoDados.ModuloDisciplina
                 disciplina = ConverterParaDisciplina(leitorDisciplina);
 
             conexaoComBanco.Close();
+
+            CarregarMaterias(disciplina);
 
             return disciplina;
         }

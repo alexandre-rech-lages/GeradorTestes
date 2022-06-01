@@ -142,7 +142,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
             if (chkProvao.Checked)
             {
                 cmbMaterias.Enabled = false;
-                cmbMaterias.Items.Clear();                
+                cmbMaterias.Items.Clear();
             }
             else
             {

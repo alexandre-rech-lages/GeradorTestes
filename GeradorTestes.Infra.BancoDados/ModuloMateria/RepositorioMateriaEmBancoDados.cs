@@ -189,7 +189,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
         {
             int numero = Convert.ToInt32(leitorMateria["NUMERO"]);
             string nome = Convert.ToString(leitorMateria["NOME"]);
-            int serie = Convert.ToInt32(leitorMateria["SERIE"]);
+            SerieMateriaEnum serie = (SerieMateriaEnum)leitorMateria["SERIE"];
 
             int numeroDisciplina = Convert.ToInt32(leitorMateria["DISCIPLINA_NUMERO"]);
             string nomeDisciplina = Convert.ToString(leitorMateria["DISCIPLINA_NOME"]);
@@ -198,7 +198,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
             {
                 Numero = numero,
                 Nome = nome,
-                Serie = (SerieMateriaEnum)serie,
+                Serie = serie,
                 Disciplina = new Disciplina
                 {
                     Numero = numeroDisciplina,
