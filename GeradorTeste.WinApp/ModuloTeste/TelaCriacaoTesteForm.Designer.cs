@@ -94,6 +94,7 @@
             this.txtNumero.Name = "txtNumero";
             this.txtNumero.Size = new System.Drawing.Size(84, 23);
             this.txtNumero.TabIndex = 27;
+            this.txtNumero.Text = "0";
             // 
             // label2
             // 

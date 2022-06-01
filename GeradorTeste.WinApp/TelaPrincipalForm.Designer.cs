@@ -40,6 +40,8 @@
             this.btnDuplicar = new System.Windows.Forms.ToolStripButton();
             this.btnExcluir = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnVisualizar = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnGerarPdf = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnFiltrar = new System.Windows.Forms.ToolStripButton();
@@ -117,6 +119,8 @@
             this.btnDuplicar,
             this.btnExcluir,
             this.toolStripSeparator2,
+            this.btnVisualizar,
+            this.toolStripSeparator3,
             this.btnGerarPdf,
             this.toolStripSeparator1,
             this.btnFiltrar,
@@ -180,6 +184,22 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 41);
+            // 
+            // btnVisualizar
+            // 
+            this.btnVisualizar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnVisualizar.Image = global::GeradorTeste.WinApp.Properties.Resources.search_FILL0_wght400_GRAD0_opsz24;
+            this.btnVisualizar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnVisualizar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnVisualizar.Name = "btnVisualizar";
+            this.btnVisualizar.Padding = new System.Windows.Forms.Padding(5);
+            this.btnVisualizar.Size = new System.Drawing.Size(38, 38);
+            this.btnVisualizar.Click += new System.EventHandler(this.btnVisualizar_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 41);
             // 
             // btnGerarPdf
             // 
@@ -260,6 +280,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gerador de Testes 1.0";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
             this.toolbox.ResumeLayout(false);
@@ -293,5 +314,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem testesMenuItem;
         private System.Windows.Forms.ToolStripButton btnDuplicar;
+        private System.Windows.Forms.ToolStripButton btnVisualizar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

@@ -230,7 +230,7 @@ namespace GeradorTeste.WinApp
                 alternativas[i] = new Alternativa
                 {
                     Numero = idAlternativa + i + 1,
-                    Resposta = (resposta * 2 * i).ToString()
+                    Resposta = (fator * resposta * i).ToString()
                 };
             }
 
@@ -240,6 +240,7 @@ namespace GeradorTeste.WinApp
                 questao.AdicionarAlternativa(item);
             }
 
+            alternativas[2].Resposta = ((fator * resposta) + (fator * resposta)).ToString();
             questao.AtualizarAlternativaCorreta(alternativas[2]);
 
             return questao;

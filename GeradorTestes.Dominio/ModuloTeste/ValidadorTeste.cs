@@ -6,6 +6,9 @@ namespace GeradorTestes.Dominio.ModuloTeste
     {
         public ValidadorTeste()
         {
+            RuleFor(x => x.Titulo)
+                .NotNull().NotEmpty();
+
             RuleFor(x => x.Disciplina)
                 .NotNull().NotEmpty();
 

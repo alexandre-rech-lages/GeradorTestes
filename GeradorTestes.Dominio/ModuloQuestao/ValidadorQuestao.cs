@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using GeradorTestes.Dominio.ModuloDisciplina;
+using GeradorTestes.Dominio.ModuloMateria;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +11,14 @@ namespace GeradorTestes.Dominio.ModuloQuestao
     {
         public ValidadorQuestao()
         {
+            RuleFor(x => x.Materia)
+               .Custom(DisciplinaEMateriaNaoPodemSerNulo);
+
+            RuleFor(x => x.Enunciado)
+               .NotNull()
+                .NotEmpty()
+                .MinimumLength(5);
+
             RuleFor(x => x.Alternativas)
                 .Must(x => x.Count >= 3)
                 .WithMessage("No mínimo 3 alternativas precisa ser informada");
@@ -22,6 +32,12 @@ namespace GeradorTestes.Dominio.ModuloQuestao
             RuleFor(x => x.Alternativas).Custom(NenhumaAlternativaCorreta);
 
             RuleFor(x => x.Alternativas).Custom(AlternativasComValoresDuplicados);
+        }
+
+        private void DisciplinaEMateriaNaoPodemSerNulo(Materia materia, ValidationContext<Questao> ctx)
+        {
+            if (materia == null)
+                ctx.AddFailure(new ValidationFailure("Disciplina", "Disciplina e Matéria não podem estar em branco"));
         }
 
         private void AlternativasComValoresDuplicados(List<Alternativa> alternativas, ValidationContext<Questao> ctx)

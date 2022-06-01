@@ -60,11 +60,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
             var tela = new TelaCriacaoTesteForm(disciplinas);
 
-            var teste = testeSelecionado.Clone();
-
-            teste.RemoverQuestoes();
-
-            tela.Teste = teste;
+            tela.Teste = testeSelecionado.Clone();
 
             tela.GravarRegistro = repositorioTeste.Inserir;
 
@@ -98,7 +94,24 @@ namespace GeradorTeste.WinApp.ModuloTeste
                 CarregarTestes();
             }
         }
-    
+
+        public override void Visualizar()
+        {
+            var numero = tabelaTestes.ObtemNumeroTesteSelecionado();
+
+            Teste testeSelecionado = repositorioTeste.SelecionarPorNumero(numero);
+
+            if (testeSelecionado == null)
+            {
+                MessageBox.Show("Selecione um Teste primeiro",
+                "Exclusão de Testes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            TelaVisualizacaoTesteForm tela = new TelaVisualizacaoTesteForm(testeSelecionado);
+            tela.ShowDialog();
+        }
+
         public override ConfiguracaoToolboxBase ObtemConfiguracaoToolbox()
         {
             return new ConfiguracaoToolboxTeste();

@@ -113,6 +113,11 @@ namespace GeradorTeste.WinApp
             controlador.Duplicar();
         }
 
+        private void btnVisualizar_Click(object sender, EventArgs e)
+        {
+            controlador.Visualizar();
+        }
+
         private void ConfigurarBotoes(ConfiguracaoToolboxBase configuracao)
         {
             btnInserir.Enabled = configuracao.InserirHabilitado;
@@ -121,6 +126,7 @@ namespace GeradorTeste.WinApp
             btnExcluir.Enabled = configuracao.ExcluirHabilitado;
             btnFiltrar.Enabled = configuracao.FiltrarHabilitado;
             btnGerarPdf.Enabled = configuracao.GerarPdfHabilitado;
+            btnVisualizar.Enabled = configuracao.VisualizarHabilitado;
         }
 
         private void ConfigurarTooltips(ConfiguracaoToolboxBase configuracao)
@@ -130,6 +136,7 @@ namespace GeradorTeste.WinApp
             btnExcluir.ToolTipText = configuracao.TooltipExcluir;
             btnFiltrar.ToolTipText = configuracao.TooltipFiltrar;
             btnGerarPdf.ToolTipText = configuracao.TooltipGerarPdf;
+            btnVisualizar.ToolTipText = configuracao.TooltipVisualizar;
         }
 
         private void ConfigurarTelaPrincipal(ToolStripMenuItem opcaoSelecionada)

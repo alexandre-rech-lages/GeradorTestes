@@ -14,6 +14,8 @@ namespace GeradorTeste.WinApp
 
         public virtual void GerarPdf() { }
 
+        public virtual void Visualizar() { }
+
         public abstract UserControl ObtemListagem();
 
         public abstract ConfiguracaoToolboxBase ObtemConfiguracaoToolbox();

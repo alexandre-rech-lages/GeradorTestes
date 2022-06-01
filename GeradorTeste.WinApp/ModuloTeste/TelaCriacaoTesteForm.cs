@@ -28,11 +28,17 @@ namespace GeradorTeste.WinApp.ModuloTeste
             {
                 teste = value;
 
+                txtNumero.Text = teste.Numero.ToString();
                 txtTitulo.Text = teste.Titulo;
                 cmbDisciplinas.SelectedItem = teste.Disciplina;
                 cmbMaterias.SelectedItem = teste.Materia;
                 chkProvao.Checked = teste.Provao;
                 txtQtdQuestoes.Value = teste.QuantidadeQuestoes;
+
+                foreach (var item in teste.Questoes)
+                {
+                    listQuestoes.Items.Add(item);
+                }
             }
         }
 
@@ -65,6 +71,8 @@ namespace GeradorTeste.WinApp.ModuloTeste
             {
                 listQuestoes.Items.Add(item);
             }
+
+            TelaPrincipalForm.Instancia.AtualizarRodape("");
         }
 
         private void btnGravar_Click(object sender, EventArgs e)
