@@ -87,17 +87,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
 
                 DialogResult = DialogResult.None;
             }
-        }
-
-        private void rdbPrimeiraSerie_CheckedChanged(object sender, EventArgs e)
-        {
-            CarregarMateriasPorSerie(SerieMateriaEnum.PrimeiraSerie);
-        }
-
-        private void rdbSegundaSerie_CheckedChanged(object sender, EventArgs e)
-        {
-            CarregarMateriasPorSerie(SerieMateriaEnum.SegundaSerie);
-        }
+        }        
 
         private void cmbDisciplinas_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -124,18 +114,7 @@ namespace GeradorTeste.WinApp.ModuloTeste
             {
                 cmbMaterias.Items.Add(item);
             }
-        }
-
-        private void CarregarMateriasPorSerie(SerieMateriaEnum serie)
-        {
-            var disciplina = cmbDisciplinas.SelectedItem as Disciplina;
-
-            if (disciplina != null)
-            {
-                var materias = disciplina.ObterMateriasPorSerie(serie);
-                CarregarMaterias(materias);
-            }
-        }
+        }      
 
         private void chkProvao_CheckedChanged(object sender, EventArgs e)
         {

@@ -1,8 +1,17 @@
 using eAgenda.Infra.Arquivos;
+
 using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using GeradorTestes.Dominio.ModuloQuestao;
+using GeradorTestes.Dominio.ModuloTeste;
+using GeradorTestes.Infra.BancoDados.Compartilhado;
+using GeradorTestes.Infra.BancoDados.ModuloDisciplina;
+using GeradorTestes.Infra.BancoDados.ModuloMateria;
+using GeradorTestes.Infra.BancoDados.ModuloQuestao;
+using GeradorTestes.Infra.BancoDados.ModuloTeste;
+
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -13,6 +22,11 @@ namespace GeradorTeste.WinApp
         static ISerializador serializador = new SerializadorDadosEmJsonDotnet();
 
         static DataContext contexto = new DataContext(serializador);
+
+        static IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaEmBancoDados();
+        static IRepositorioMateria repositorioMateria = new RepositorioMateriaEmBancoDados();
+        static IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoEmBancoDados();
+        static IRepositorioTeste repositorioTeste = new RepositorioTesteEmBancoDados();
 
 
         /// <summary>
@@ -31,6 +45,12 @@ namespace GeradorTeste.WinApp
             if (File.Exists(@"C:\temp\dados.json") == false)
                 ConfigurarAplicacao();
 
+            if (Db.ExisteTestesGravados() == false)
+            {
+                Db.LimparTabelas();
+                ConfigurarAplicacao();
+            }
+
             Application.Run(new TelaPrincipalForm(contexto));
 
             contexto.GravarDados();
@@ -38,12 +58,12 @@ namespace GeradorTeste.WinApp
 
         private static void ConfigurarAplicacao()
         {
-            ConfigurarQuestoesMatematica();
+            ConfigurarTesteMatematica();
 
-            ConfigurarQuestoesPortugues();
+            ConfigurarTestePortugues();
         }
 
-        private static void ConfigurarQuestoesPortugues()
+        private static void ConfigurarTestePortugues()
         {
             var portugues = new Disciplina
             {
@@ -83,6 +103,27 @@ namespace GeradorTeste.WinApp
             contexto.Questoes.Add(q2);
             contexto.Questoes.Add(q3);
             contexto.Questoes.Add(q4);
+
+            repositorioDisciplina.Inserir(portugues);
+
+            repositorioMateria.Inserir(vogais);
+            repositorioMateria.Inserir(consoantes);
+
+            repositorioQuestao.Inserir(q1);
+            repositorioQuestao.Inserir(q2);
+            repositorioQuestao.Inserir(q3);
+            repositorioQuestao.Inserir(q4);
+
+            Teste novoTeste = new Teste();
+
+            novoTeste.Titulo = "Revisão sobre Letras do Alfabeto";
+            novoTeste.ConfigurarDisciplina(portugues);
+            novoTeste.ConfigurarMateria(consoantes);
+            novoTeste.Provao = false;
+            novoTeste.QuantidadeQuestoes = 5;
+            novoTeste.SortearQuestoes();
+
+            repositorioTeste.Inserir(novoTeste);
         }
 
         private static Questao NovaQuestaoPortugues(Materia materia, int idQuestao, int idAlternativa, char letra, char resposta)
@@ -117,15 +158,13 @@ namespace GeradorTeste.WinApp
             return questao;
         }
 
-        private static void ConfigurarQuestoesMatematica()
+        private static void ConfigurarTesteMatematica()
         {
             var matematica = new Disciplina
             {
                 Numero = 1,
                 Nome = "Matemática"
             };
-
-            contexto.Disciplinas.Add(matematica);
 
             var adicaoUnidades = new Materia
             {
@@ -163,15 +202,12 @@ namespace GeradorTeste.WinApp
 
             adicaoMilhar.ConfigurarDisciplina(matematica);
 
-            contexto.Materias.Add(adicaoUnidades);
-            contexto.Materias.Add(adicaoDezenas);
-            contexto.Materias.Add(adicaoCentenas);
-            contexto.Materias.Add(adicaoMilhar);
-
             var materias = new Materia[] { adicaoUnidades, adicaoDezenas, adicaoCentenas, adicaoMilhar };
 
             int contadorAlternativa = 1;
             int resposta = 0;
+
+            var questoes = new List<Questao>();
 
             for (int i = 1; i < 40; i++)
             {
@@ -207,10 +243,43 @@ namespace GeradorTeste.WinApp
 
                 contadorAlternativa += 4;
 
-                contexto.Questoes.Add(q);
-
-
+                questoes.Add(q);
             }
+
+            contexto.Disciplinas.Add(matematica);
+
+            contexto.Materias.Add(adicaoUnidades);
+            contexto.Materias.Add(adicaoDezenas);
+            contexto.Materias.Add(adicaoCentenas);
+            contexto.Materias.Add(adicaoMilhar);
+
+            foreach (var questao in questoes)
+            {
+                contexto.Questoes.Add(questao);
+            }
+
+            repositorioDisciplina.Inserir(matematica);
+
+            repositorioMateria.Inserir(adicaoUnidades);
+            repositorioMateria.Inserir(adicaoDezenas);
+            repositorioMateria.Inserir(adicaoCentenas);
+            repositorioMateria.Inserir(adicaoMilhar);
+
+            foreach (var questao in questoes)
+            {
+                repositorioQuestao.Inserir(questao);
+            }
+
+            Teste novoTeste = new Teste();
+
+            novoTeste.Titulo = "Revisão sobre Adição de Unidades";
+            novoTeste.ConfigurarDisciplina(matematica);
+            novoTeste.ConfigurarMateria(adicaoUnidades);
+            novoTeste.Provao = false;
+            novoTeste.QuantidadeQuestoes = 5;
+            novoTeste.SortearQuestoes();
+
+            repositorioTeste.Inserir(novoTeste);
         }
 
         private static Questao NovaQuestaoMatematica(Materia materia, int idQuestao, int idAlternativa, int resposta, int fator)

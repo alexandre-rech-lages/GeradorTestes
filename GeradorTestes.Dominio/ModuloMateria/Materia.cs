@@ -45,7 +45,8 @@ namespace GeradorTestes.Dominio.ModuloMateria
 
         public void ConfigurarDisciplina(Disciplina disciplina)
         {
-            if (Disciplina.Equals(disciplina) == false)
+
+            if ( Disciplina.Equals(disciplina) == false)
             {
                 Disciplina = disciplina;
                 Disciplina.AdicionarMateria(this);

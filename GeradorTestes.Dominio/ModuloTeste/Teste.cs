@@ -14,6 +14,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
         {
             DataGeracao = DateTime.Now;
             Questoes = new List<Questao>();
+            QuantidadeQuestoes = 5;
         }
 
         public string Titulo { get; set; }
@@ -72,6 +73,12 @@ namespace GeradorTestes.Dominio.ModuloTeste
         public void ConfigurarMateria(Materia materia)
         {
             Materia = materia;
+
+        }
+
+        public void ConfigurarDisciplina(Disciplina disciplina)
+        {
+            Disciplina = disciplina;
         }
     }
 }

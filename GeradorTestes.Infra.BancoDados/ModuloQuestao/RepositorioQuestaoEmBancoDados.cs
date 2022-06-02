@@ -46,48 +46,43 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 			            [NUMERO] = @NUMERO";
 
         private const string sqlSelecionarTodos =
-            @"SELECT        
-	                T.TITULO, 
-	                T.DATAGERACAO, 
-	                T.PROVAO, 	
-	                T.NUMERO, 
+            @"SELECT 
+	                Q.NUMERO,
+	                Q.ENUNCIADO,
 
-	                D.NUMERO DISCIPLINA_NUMERO, 
-	                D.NOME DISCIPLINA_NOME,
-	
-	                M.NUMERO MATERIA_NUMERO, 
-	                M.NOME MATERIA_NOME,
-	                M.SERIE MATERIA_SERIE 	
+	                M.NUMERO AS MATERIA_NUMERO,
+	                M.NOME AS MATERIA_NOME,
+                    M.SERIE AS MATERIA_SERIE,
 
-                FROM  
-	                TBTESTE T INNER JOIN TBDISCIPLINA D 
+	                D.NUMERO AS DISCIPLINA_NUMERO,
+	                D.NOME AS DISCIPLINA_NOME
+
+                FROM 
+	                TBQUESTAO Q INNER JOIN TBMATERIA M 
                 ON 
-	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
+	                Q.MATERIA_NUMERO = M.NUMERO INNER JOIN TBDISCIPLINA D 
                 ON 
-	                T.MATERIA_NUMERO = M.NUMERO";
+	                D.NUMERO = M.DISCIPLINA_NUMERO";
 
         private const string sqlSelecionarPorNumero =
-            @"SELECT        
-	                T.TITULO, 
-	                T.DATAGERACAO, 
-	                T.PROVAO, 	
-	                T.NUMERO, 
+           @"SELECT 
+	                Q.NUMERO,
+	                Q.ENUNCIADO,
 
-	                D.NUMERO DISCIPLINA_NUMERO, 
-	                D.NOME DISCIPLINA_NOME,
-	
-	                M.NUMERO MATERIA_NUMERO, 
-	                M.NOME MATERIA_NOME,
-	                M.SERIE MATERIA_SERIE 	
+	                M.NUMERO AS MATERIA_NUMERO,
+	                M.NOME AS MATERIA_NOME,
 
-                FROM  
-	                TBTESTE T INNER JOIN TBDISCIPLINA D 
+	                D.NUMERO AS DISCIPLINA_NUMERO,
+	                D.NOME AS DISCIPLINA_NOME
+
+                FROM 
+	                TBQUESTAO Q INNER JOIN TBMATERIA M 
                 ON 
-	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
+	                Q.MATERIA_NUMERO = M.NUMERO INNER JOIN TBDISCIPLINA D 
                 ON 
-	                T.MATERIA_NUMERO = M.NUMERO
+	                D.NUMERO = M.DISCIPLINA_NUMERO
                 WHERE 
-	                Q.[NUMERO] = @NUMERO";
+                    Q.NUMERO = @NUMERO";
 
         private const string sqlInserirAlternativas =
            @"INSERT INTO [TBALTERNATIVA]
@@ -242,7 +237,6 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
             return questoes;
         }
-
       
         public AbstractValidator<Questao> ObterValidador()
         {

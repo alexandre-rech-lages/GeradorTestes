@@ -22,6 +22,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
                 (
                     [TITULO],                    
                     [DATAGERACAO],
+                    [QUANTIDADEQUESTOES],
                     [PROVAO],
                     [MATERIA_NUMERO],
                     [DISCIPLINA_NUMERO]
@@ -30,6 +31,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
                 (
                     @TITULO,
                     @DATAGERACAO,
+                    @QUANTIDADEQUESTOES,
                     @PROVAO,
                     @MATERIA_NUMERO,
                     @DISCIPLINA_NUMERO
@@ -49,25 +51,71 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
 
                 );";
 
-
         private const string sqlSelecionarTodos =
-          @"SELECT        
-	            T.TITULO, 
-	            T.DATAGERACAO, 
-	            T.PROVAO, 	
-	            T.NUMERO, 
+             @"SELECT        
+	                T.NUMERO,
+	                T.TITULO, 
+	                T.DATAGERACAO, 
+	                T.PROVAO, 	
+ 	                T.QUANTIDADEQUESTOES,
 
-	            D.NUMERO DISCIPLINA_NUMERO, 
-	            D.NOME DISCIPLINA_NOME, 
+	                D.NUMERO DISCIPLINA_NUMERO, 
+	                D.NOME DISCIPLINA_NOME,
+	
+	                M.NUMERO MATERIA_NUMERO, 
+	                M.NOME MATERIA_NOME,
+	                M.SERIE MATERIA_SERIE 	
 
-	            M.NUMERO MATERIA_NUMERO, 
-	            M.NOME MATERIA_NOME,
-	            M.SERIE MATERIA_SERIE 		
+                FROM  
+	                TBTESTE T INNER JOIN TBDISCIPLINA D 
+                ON 
+	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
+                ON 
+	                T.MATERIA_NUMERO = M.NUMERO";
 
-            FROM            	
-	            TBDISCIPLINA AS D INNER JOIN
-	            TBMATERIA AS M ON D.NUMERO = M.DISCIPLINA_NUMERO RIGHT JOIN
-	            TBTESTE AS T ON D.NUMERO = T.DISCIPLINA_NUMERO AND M.NUMERO = T.MATERIA_NUMERO";
+        private const string sqlSelecionarPorNumero =
+            @"SELECT        
+	                T.NUMERO,
+	                T.TITULO, 
+	                T.DATAGERACAO, 
+	                T.PROVAO, 	
+ 	                T.QUANTIDADEQUESTOES,
+
+	                D.NUMERO DISCIPLINA_NUMERO, 
+	                D.NOME DISCIPLINA_NOME,
+	
+	                M.NUMERO MATERIA_NUMERO, 
+	                M.NOME MATERIA_NOME,
+	                M.SERIE MATERIA_SERIE 	
+
+                FROM  
+	                TBTESTE T INNER JOIN TBDISCIPLINA D 
+                ON 
+	                T.DISCIPLINA_NUMERO = D.NUMERO LEFT JOIN TBMATERIA M 
+                ON 
+	                T.MATERIA_NUMERO = M.NUMERO
+                WHERE 
+	                T.[NUMERO] = @NUMERO";
+
+        private const string sqlSelecionarQuestoesDoTeste =
+            @"SELECT 
+	                Q.NUMERO, 
+	                Q.ENUNCIADO
+                FROM 
+	                TBQUESTAO AS Q INNER JOIN TBTESTE_TBQUESTAO AS TQ
+                ON 
+	                Q.NUMERO = TQ.QUESTAO_NUMERO
+                WHERE 
+	                TQ.TESTE_NUMERO = @TESTE_NUMERO";
+
+        private const string sqlExcluir =
+           @"DELETE FROM [TBTESTE_TBQUESTAO]
+		            WHERE
+			            [TESTE_NUMERO] = @NUMERO;
+
+            DELETE FROM [TBTESTE]
+		            WHERE
+			            [NUMERO] = @NUMERO";
 
         public ValidationResult Inserir(Teste teste)
         {
@@ -94,6 +142,75 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
 
             return resultadoValidacao;
         }
+                        
+        public ValidationResult Excluir(Teste registro)
+        {
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoExclusao = new SqlCommand(sqlExcluir, conexaoComBanco);
+
+            comandoExclusao.Parameters.AddWithValue("NUMERO", registro.Numero);
+
+            conexaoComBanco.Open();
+            int numeroRegistrosExcluidos = comandoExclusao.ExecuteNonQuery();
+
+            var resultadoValidacao = new ValidationResult();
+
+            if (numeroRegistrosExcluidos == 0)
+                resultadoValidacao.Errors.Add(new ValidationFailure("", "Não foi possível remover o registro"));
+
+            conexaoComBanco.Close();
+
+            return resultadoValidacao;
+        }
+
+        public List<Teste> SelecionarTodos()
+        {
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarTodos, conexaoComBanco);
+
+            conexaoComBanco.Open();
+            SqlDataReader leitorTeste = comandoSelecao.ExecuteReader();
+
+            List<Teste> testes = new List<Teste>();
+
+            while (leitorTeste.Read())
+            {
+                Teste teste = ConverterParaTeste(leitorTeste);
+
+                testes.Add(teste);
+            }
+
+            conexaoComBanco.Close();
+
+            return testes;
+        }
+
+        public Teste SelecionarPorNumero(int numero)
+        {
+            SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
+
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarPorNumero, conexaoComBanco);
+
+            comandoSelecao.Parameters.AddWithValue("NUMERO", numero);
+
+            conexaoComBanco.Open();
+            SqlDataReader leitorTeste = comandoSelecao.ExecuteReader();
+
+            Teste teste = null;
+
+            if (leitorTeste.Read())
+            {
+                teste = ConverterParaTeste(leitorTeste);
+            }
+
+            conexaoComBanco.Close();
+
+            CarregarQuestoes(teste);
+
+            return teste;
+        }
 
         private void AdicionarQuestoesNoTeste(Teste teste)
         {
@@ -112,61 +229,63 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
 
             conexaoComBanco.Close();
         }
-       
+
         private void ConfigurarParametrosTeste(Teste teste, SqlCommand comando)
         {
             comando.Parameters.AddWithValue("NUMERO", teste.Numero);
             comando.Parameters.AddWithValue("TITULO", teste.Titulo);
             comando.Parameters.AddWithValue("DATAGERACAO", teste.DataGeracao);
-            comando.Parameters.AddWithValue("MATERIA_NUMERO", teste.Disciplina.Numero);
-            comando.Parameters.AddWithValue("DISCIPLINA_NUMERO", teste.Materia?.Numero);
+            comando.Parameters.AddWithValue("QUANTIDADEQUESTOES", teste.QuantidadeQuestoes);
+            comando.Parameters.AddWithValue("DISCIPLINA_NUMERO", teste.Disciplina.Numero);
+
+            if (teste.Materia != null)
+                comando.Parameters.AddWithValue("MATERIA_NUMERO", teste.Materia.Numero);
+            else
+                comando.Parameters.AddWithValue("MATERIA_NUMERO", DBNull.Value);
+
             comando.Parameters.AddWithValue("PROVAO", teste.Provao);
         }
 
-        public ValidationResult Editar(Teste registro)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValidationResult Excluir(Teste registro)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Teste SelecionarPorNumero(int numero)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Teste> SelecionarTodos()
+        private void CarregarQuestoes(Teste teste)
         {
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
-            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarTodos, conexaoComBanco);
+            SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarQuestoesDoTeste, conexaoComBanco);
+
+            comandoSelecao.Parameters.AddWithValue("TESTE_NUMERO", teste.Numero);
 
             conexaoComBanco.Open();
-            SqlDataReader leitorTeste = comandoSelecao.ExecuteReader();
+            SqlDataReader leitorQuestoes = comandoSelecao.ExecuteReader();
 
-            List<Teste> testes = new List<Teste>();
-
-            while (leitorTeste.Read())
+            while (leitorQuestoes.Read())
             {
-                Teste teste = ConverterParaTeste(leitorTeste);                
+                Questao questao = ConverterParaQuestao(leitorQuestoes);
 
-                testes.Add(teste);
+                teste.Questoes.Add(questao);
             }
 
             conexaoComBanco.Close();
-
-            return testes;
         }
 
+        private Questao ConverterParaQuestao(SqlDataReader leitorQuestao)
+        {
+            int numero = Convert.ToInt32(leitorQuestao["NUMERO"]);
+            string enunciado = Convert.ToString(leitorQuestao["ENUNCIADO"]);
+
+            return new Questao
+            {
+                Numero = numero,
+                Enunciado = enunciado
+            };
+        }
+        
         private Teste ConverterParaTeste(SqlDataReader leitorTeste)
         {
             var numero = Convert.ToInt32(leitorTeste["NUMERO"]);
             string titulo = Convert.ToString(leitorTeste["TITULO"]);
             var provao = Convert.ToBoolean(leitorTeste["PROVAO"]);
             var dataGeracao = Convert.ToDateTime(leitorTeste["DATAGERACAO"]);
+            var qtdQuestoes = Convert.ToInt32(leitorTeste["QUANTIDADEQUESTOES"]);
 
             int numeroDisciplina = Convert.ToInt32(leitorTeste["DISCIPLINA_NUMERO"]);
             string nomeDisciplina = Convert.ToString(leitorTeste["DISCIPLINA_NOME"]);
@@ -182,7 +301,8 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
                 Numero = numero,
                 Titulo = titulo,
                 Provao = provao,
-                DataGeracao = dataGeracao
+                DataGeracao = dataGeracao,
+                QuantidadeQuestoes = qtdQuestoes
             };
 
             Materia materia;
@@ -208,5 +328,12 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
             
             return teste;
         }
+
+        #region métodos não implementados
+        public ValidationResult Editar(Teste registro)
+        {
+            return new ValidationResult();
+        }
+        #endregion
     }
 }

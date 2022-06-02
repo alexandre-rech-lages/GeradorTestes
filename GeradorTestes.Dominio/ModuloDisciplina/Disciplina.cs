@@ -30,15 +30,7 @@ namespace GeradorTestes.Dominio.ModuloDisciplina
         public List<Materia> Materias { get; set; }
 
         public string Nome { get; set; }
-
-        public List<Materia> ObterMateriasPorSerie(SerieMateriaEnum serie)
-        {
-            if (Materias.Any())
-                return Materias.Where(x => x.Serie == serie).ToList();
-
-            return new List<Materia>();
-        }
-
+      
         public bool AdicionarMateria(Materia materia)
         {
             if (Materias.Contains(materia))
@@ -58,6 +50,7 @@ namespace GeradorTestes.Dominio.ModuloDisciplina
 
         public override void Atualizar(Disciplina disciplina)
         {
+            Nome = disciplina.Nome;
         }
 
         public override bool Equals(object obj)
