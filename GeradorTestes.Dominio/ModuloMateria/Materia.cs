@@ -35,7 +35,7 @@ namespace GeradorTestes.Dominio.ModuloMateria
 
             Questoes.Add(questao);
 
-            questao.Materia = this;
+            questao.ConfigurarMateria(this);
         }
 
         public override string ToString()
@@ -45,12 +45,8 @@ namespace GeradorTestes.Dominio.ModuloMateria
 
         public void ConfigurarDisciplina(Disciplina disciplina)
         {
-
-            if ( Disciplina.Equals(disciplina) == false)
-            {
-                Disciplina = disciplina;
-                Disciplina.AdicionarMateria(this);
-            }
+            Disciplina = disciplina;
+            Disciplina.AdicionarMateria(this);
         }
 
         public Materia Clone()

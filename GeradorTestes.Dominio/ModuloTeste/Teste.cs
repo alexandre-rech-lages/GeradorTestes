@@ -50,10 +50,12 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public void SortearQuestoes()
         {
-            if (Provao)
-                Questoes = Disciplina.TodasQuestoes.Randomize(QuantidadeQuestoes).ToList();
+            List<Questao> questoesSelecionadas = Provao ? Disciplina.TodasQuestoes : Materia.Questoes;
+
+            if (questoesSelecionadas.Count <= QuantidadeQuestoes)
+                Questoes = questoesSelecionadas.Randomize(QuantidadeQuestoes).ToList();            
             else
-                Questoes = Materia.Questoes.Randomize(QuantidadeQuestoes).ToList();
+                Questoes = questoesSelecionadas.Randomize().ToList();
         }
 
         public override void Atualizar(Teste teste)
@@ -73,7 +75,6 @@ namespace GeradorTestes.Dominio.ModuloTeste
         public void ConfigurarMateria(Materia materia)
         {
             Materia = materia;
-
         }
 
         public void ConfigurarDisciplina(Disciplina disciplina)

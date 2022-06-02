@@ -11,7 +11,6 @@ namespace GeradorTestes.Dominio.ModuloQuestao
         public Questao()
         {
             _alternativas = new List<Alternativa>();
-            Materia = new Materia();
         }
 
         public Questao(string enunciado, Materia materia, List<Alternativa> alternativas)
@@ -103,11 +102,8 @@ namespace GeradorTestes.Dominio.ModuloQuestao
 
         public void ConfigurarMateria(Materia materia)
         {
-            if (Materia.Equals(materia) == false)
-            {
-                Materia = materia;
-                Materia.AdicionaQuestao(this);
-            }
+            Materia = materia;
+            Materia.AdicionaQuestao(this);
         }
 
         public override string ToString()

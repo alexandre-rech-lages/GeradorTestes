@@ -7,11 +7,15 @@ namespace GeradorTestes.Dominio
 {
     public static class IEnumerableExtensions
     {
-        public static IEnumerable<T> Randomize<T>(this IEnumerable<T> target, int count)
+        public static IEnumerable<T> Randomize<T>(this IEnumerable<T> target, int count = 0)
         {
             Random r = new Random();
 
-            return target.OrderBy(x => (r.Next())).Take(count);
+            if (count == 0)
+                return target.OrderBy(x => r.Next());
+            else
+                return target.OrderBy(x => r.Next())
+                    .Take(count);
         }
     }
 

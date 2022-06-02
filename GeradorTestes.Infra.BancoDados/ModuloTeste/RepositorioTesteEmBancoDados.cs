@@ -324,7 +324,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloTeste
                 teste.ConfigurarMateria(materia);
             }
 
-            teste.Disciplina = disciplina;   
+            teste.ConfigurarDisciplina(disciplina);   
             
             return teste;
         }
