@@ -229,7 +229,6 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
             while (leitorQuestao.Read())
             {
                 Questao questao = ConverterParaQuestao(leitorQuestao);
-                CarregarAlternativas(questao);
 
                 questoes.Add(questao);
             }
