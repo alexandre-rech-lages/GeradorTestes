@@ -13,7 +13,7 @@ namespace GeradorTestes.Infra.BancoDados.Compartilhado
 
         public static bool ExisteTestesGravados()
         {
-            string sql = "select Count(*) from [dbo].[TBTeste];";
+            string sql = "select Count(*) from [TBTeste];";
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
@@ -28,13 +28,23 @@ namespace GeradorTestes.Infra.BancoDados.Compartilhado
 
         public static void LimparTabelas()
         {
-            string sql = 
-                @"  delete from [dbo].[TBTeste_TBQuestao];
-                    delete from [dbo].[TBTeste];
-                    delete from [dbo].[TBAlternativa];
-                    delete from [dbo].[TBQuestao];
-                    delete from [dbo].[TBMateria];
-                    delete from [dbo].[TBDisciplina];";
+            string sql =
+                @"  DELETE FROM [TBTESTE_TBQUESTAO];                    
+
+                    DELETE FROM [TBTESTE];
+                    DBCC CHECKIDENT (TBTESTE, RESEED, 0);
+
+                    DELETE FROM [TBALTERNATIVA];
+                    DBCC CHECKIDENT (TBALTERNATIVA, RESEED, 0);
+
+                    DELETE FROM [TBQUESTAO];
+                    DBCC CHECKIDENT (TBQUESTAO, RESEED, 0);
+
+                    DELETE FROM [TBMATERIA];
+                    DBCC CHECKIDENT (TBMATERIA, RESEED, 0);
+
+                    DELETE FROM [TBDISCIPLINA];
+                    DBCC CHECKIDENT (TBDISCIPLINA, RESEED, 0)";
 
             SqlConnection conexaoComBanco = new SqlConnection(enderecoBanco);
 
@@ -44,7 +54,5 @@ namespace GeradorTestes.Infra.BancoDados.Compartilhado
             comandoExclusao.ExecuteNonQuery();            
             conexaoComBanco.Close();
         }
-
-
     }
 }

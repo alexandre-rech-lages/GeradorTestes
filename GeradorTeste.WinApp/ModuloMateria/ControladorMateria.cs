@@ -56,7 +56,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
 
             tela.Materia = materiaSelecionada.Clone();
 
-            tela.GravarRegistro = repositorioMateria.Inserir;
+            tela.GravarRegistro = repositorioMateria.Editar;
 
             DialogResult resultado = tela.ShowDialog();
 

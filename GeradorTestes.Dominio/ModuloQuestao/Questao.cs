@@ -102,6 +102,9 @@ namespace GeradorTestes.Dominio.ModuloQuestao
 
         public void ConfigurarMateria(Materia materia)
         {
+            if (materia == null)
+                return;
+
             Materia = materia;
             Materia.AdicionaQuestao(this);
         }

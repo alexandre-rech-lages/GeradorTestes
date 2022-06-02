@@ -47,7 +47,7 @@ namespace GeradorTeste.WinApp.ModuloDisciplina
 
             tela.Disciplina = disciplinaSelecionada.Clone();
 
-            tela.GravarRegistro = repositorioDisciplina.Inserir;
+            tela.GravarRegistro = repositorioDisciplina.Editar;
 
             DialogResult resultado = tela.ShowDialog();
 

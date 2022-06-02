@@ -1,7 +1,9 @@
 ﻿using FluentValidation.Results;
+using GeradorTestes.Dominio;
 using GeradorTestes.Dominio.ModuloDisciplina;
 using GeradorTestes.Dominio.ModuloMateria;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -17,6 +19,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
             this.ConfigurarTela();
             CarregarDisciplinas(disciplinas);
             CarregarSeries();
+            
         }
 
         public Materia Materia
@@ -29,7 +32,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
                 txtNumero.Text = materia.Numero.ToString();
                 txtNome.Text = materia.Nome;
                 cmbDisciplinas.SelectedItem = materia.Disciplina;
-                cmbSeries.SelectedItem = materia.Serie;
+                cmbSeries.SelectedValue = materia.Serie;
             }
         }
 
@@ -38,7 +41,7 @@ namespace GeradorTeste.WinApp.ModuloMateria
         private void btnGravar_Click(object sender, EventArgs e)
         {
             materia.Nome = txtNome.Text;
-            materia.Serie = (SerieMateriaEnum)cmbSeries.SelectedItem;
+            materia.Serie = (SerieMateriaEnum)cmbSeries.SelectedValue;
             materia.ConfigurarDisciplina((Disciplina)cmbDisciplinas.SelectedItem);
 
             var resultadoValidacao = GravarRegistro(materia);
@@ -57,12 +60,17 @@ namespace GeradorTeste.WinApp.ModuloMateria
         {
             var series = Enum.GetValues(typeof(SerieMateriaEnum));
 
-            cmbSeries.Items.Clear();
+            ArrayList items = new ArrayList();
 
-            foreach (var item in series)
+            foreach (Enum serie in series)
             {
-                cmbSeries.Items.Add(item);
+                var item = KeyValuePair.Create(serie, serie.GetDescription());
+                items.Add(item);
             }
+
+            cmbSeries.DataSource = items;
+            cmbSeries.DisplayMember = "Value";
+            cmbSeries.ValueMember = "Key";
         }
 
         private void CarregarDisciplinas(List<Disciplina> disciplinas)

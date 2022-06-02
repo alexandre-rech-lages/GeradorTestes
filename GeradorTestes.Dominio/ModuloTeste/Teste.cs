@@ -52,7 +52,7 @@ namespace GeradorTestes.Dominio.ModuloTeste
         {
             List<Questao> questoesSelecionadas = Provao ? Disciplina.TodasQuestoes : Materia.Questoes;
 
-            if (questoesSelecionadas.Count <= QuantidadeQuestoes)
+            if (questoesSelecionadas.Count >= QuantidadeQuestoes)
                 Questoes = questoesSelecionadas.Randomize(QuantidadeQuestoes).ToList();            
             else
                 Questoes = questoesSelecionadas.Randomize().ToList();
@@ -74,11 +74,17 @@ namespace GeradorTestes.Dominio.ModuloTeste
 
         public void ConfigurarMateria(Materia materia)
         {
+            if (materia == null)
+                return;
+
             Materia = materia;
         }
 
         public void ConfigurarDisciplina(Disciplina disciplina)
         {
+            if (disciplina == null)
+                return;
+
             Disciplina = disciplina;
         }
     }

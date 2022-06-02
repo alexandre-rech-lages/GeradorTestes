@@ -71,6 +71,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 
 	                M.NUMERO AS MATERIA_NUMERO,
 	                M.NOME AS MATERIA_NOME,
+                    M.SERIE AS MATERIA_SERIE,
 
 	                D.NUMERO AS DISCIPLINA_NUMERO,
 	                D.NOME AS DISCIPLINA_NOME
@@ -113,7 +114,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloQuestao
 	                [QUESTAO_NUMERO] = @QUESTAO_NUMERO";
 
         private const string sqlExcluirAlternativas =
-          @"DELETE FROM [TBALTERNATIVA]
+           @"DELETE FROM [TBALTERNATIVA]
 		            WHERE
 			            [QUESTAO_NUMERO] = @QUESTAO_NUMERO";
 

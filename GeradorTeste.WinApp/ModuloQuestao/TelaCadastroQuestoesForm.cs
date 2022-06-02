@@ -29,7 +29,7 @@ namespace GeradorTeste.WinApp.ModuloQuestao
                 questao = value;
                 txtNumero.Text = Questao.Numero.ToString();
                 txtEnunciado.Text = Questao.Enunciado;
-                cmbDisciplinas.SelectedItem = Questao.Materia.Disciplina;
+                cmbDisciplinas.SelectedItem = Questao.Materia?.Disciplina;
                 cmbMaterias.SelectedItem = Questao.Materia;
 
                 int i = 0;

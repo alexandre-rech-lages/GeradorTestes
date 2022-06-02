@@ -70,6 +70,7 @@
             // 
             // txtNumero
             // 
+            this.txtNumero.Enabled = false;
             this.txtNumero.Location = new System.Drawing.Point(99, 19);
             this.txtNumero.Name = "txtNumero";
             this.txtNumero.Size = new System.Drawing.Size(84, 23);
@@ -104,6 +105,7 @@
             // 
             // cmbDisciplinas
             // 
+            this.cmbDisciplinas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDisciplinas.FormattingEnabled = true;
             this.cmbDisciplinas.Location = new System.Drawing.Point(99, 77);
             this.cmbDisciplinas.Name = "cmbDisciplinas";
@@ -121,6 +123,7 @@
             // 
             // cmbSeries
             // 
+            this.cmbSeries.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSeries.FormattingEnabled = true;
             this.cmbSeries.Location = new System.Drawing.Point(99, 106);
             this.cmbSeries.Name = "cmbSeries";

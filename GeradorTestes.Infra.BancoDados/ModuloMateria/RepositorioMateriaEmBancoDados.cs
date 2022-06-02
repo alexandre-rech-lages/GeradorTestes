@@ -32,7 +32,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
                 SELECT SCOPE_IDENTITY()";
 
         private const string sqlEditar =
-            @"UPDATE [MATERIA]	
+            @"UPDATE [TBMATERIA]	
 		        SET
                     [NOME] = @NOME,
 			        [DISCIPLINA_NUMERO] = @DISCIPLINA_NUMERO,
@@ -41,7 +41,7 @@ namespace GeradorTestes.Infra.BancoDados.ModuloMateria
 			        [NUMERO] = @NUMERO";
 
         private const string sqlExcluir =
-            @"DELETE FROM [MATERIA]
+            @"DELETE FROM [TBMATERIA]
 		        WHERE
 			        [NUMERO] = @NUMERO";
 
